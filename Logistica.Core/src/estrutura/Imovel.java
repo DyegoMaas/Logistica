@@ -1,5 +1,5 @@
 package estrutura;
 
-public class Aresta {
+public class Imovel {
 
 }
