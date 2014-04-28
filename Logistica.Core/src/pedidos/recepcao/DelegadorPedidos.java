@@ -4,7 +4,6 @@ import java.util.List;
 
 import pedidos.IPedido;
 import pedidos.distribuicao.CentroDistribuicao;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class DelegadorPedidos implements IDelegadorPedidos{
 
@@ -15,14 +14,12 @@ public class DelegadorPedidos implements IDelegadorPedidos{
 	}
 	
 	@Override
-	public void delegar(IPedido pedido) {
-		
+	public void delegar(IPedido pedido) {		
 		for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
 			if(centroDistribuicao.ehResponsavel(pedido.getEndereco())){
 				centroDistribuicao.distribuir(pedido);
 			}
-		}
-		throw new NotImplementedException(); 		
+		}	
 	}
 
 }
