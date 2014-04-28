@@ -1,4 +1,4 @@
-package geradorCidades;
+package geracao.cidades;
 
 import java.util.Random;
 
@@ -120,19 +120,6 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 	private boolean estouEmUmQuarteirao(int ultimoY, int ultimoX) {
 		return ultimoX >= 0 && ultimoY >= 0;
 	}
-
-//	private Interseccao obterInterseccaoOposta(Interseccao interseccaoAtual, Interseccao umaInterseccao, Interseccao outraInterseccao) throws Exception {
-//		for (Logradouro umLogradouro : umaInterseccao.getLogradouros()) {
-//			for (Logradouro outroLogradouro : outraInterseccao.getLogradouros()) {
-//				if(quandoLogradouroNaoForRelacionadoInterseccaoAtual(interseccaoAtual, umLogradouro) && quandoLogradouroNaoForRelacionadoInterseccaoAtual(interseccaoAtual, outroLogradouro)){
-//					Interseccao interseccao = obterInterseccaoEmComum(umLogradouro, outroLogradouro);
-//					if(interseccao != null)
-//						return interseccao;
-//				}
-//			}
-//		}
-//		throw new Exception("Não existe Intersecção relacionada entre " + umaInterseccao.toString() + " e " + outraInterseccao.toString());
-//	}
 	
 	private Logradouro obterLogradouroAdjacente(Interseccao interseccaoAtual, Interseccao umaInterseccao, Interseccao outraInterseccao) throws Exception {
 		for (Logradouro umLogradouro : umaInterseccao.getLogradouros()) {

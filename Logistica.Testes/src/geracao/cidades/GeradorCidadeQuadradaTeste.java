@@ -1,4 +1,4 @@
-package geradorCidades;
+package geracao.cidades;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.*;
 
 import estrutura.Cidade;
+import geracao.cidades.GeradorCidadeQuadrada;
+import geracao.cidades.IGeradorCidade;
 
 @RunWith(JUnit4.class)
 public class GeradorCidadeQuadradaTeste {

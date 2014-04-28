@@ -1,4 +1,4 @@
-package geradorCidades;
+package geracao.cidades;
 
 import estrutura.Cidade;
 
