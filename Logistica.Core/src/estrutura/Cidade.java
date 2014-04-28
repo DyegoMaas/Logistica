@@ -14,6 +14,7 @@ public class Cidade {
 	private UUID id;
 
 	public Cidade(String nome){
+		this.id = UUID.randomUUID();
 		this.nome = nome;
 		interseccoes = new HashSet<Interseccao>();
 		logradouros = new HashSet<Logradouro>();
