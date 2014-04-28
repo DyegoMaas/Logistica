@@ -17,8 +17,8 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 	private Interseccao[][] interseccoes;
 	
 	@Override
-	public Cidade gerar(int tamanho) throws Exception{
-		Cidade cidade = new Cidade();
+	public Cidade gerar(String nome, int tamanho) throws Exception{
+		Cidade cidade = new Cidade(nome);
 
 		interseccoes = new Interseccao[tamanho][tamanho];
 		

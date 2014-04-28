@@ -4,6 +4,6 @@ import estrutura.Cidade;
 
 public interface IGeradorCidade {
 
-	public abstract Cidade gerar(int tamanho) throws Exception;
+	Cidade gerar(String nome, int tamanho) throws Exception;
 
 }

@@ -18,7 +18,7 @@ public class GeradorCidadeQuadradaTeste {
 		final int tamanho = 100;
 		
 		IGeradorCidade gerador = new GeradorCidadeQuadrada();		
-		Cidade cidadeGerada = gerador.gerar(tamanho);
+		Cidade cidadeGerada = gerador.gerar("Timbó", tamanho);
 		
 		assertEquals(tamanho * tamanho, cidadeGerada.getInterseccoes().length); 
 		assertEquals(tamanho * tamanho - 1, cidadeGerada.getEnderecos().length);

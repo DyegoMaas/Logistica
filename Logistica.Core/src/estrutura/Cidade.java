@@ -1,6 +1,7 @@
 package estrutura;
 
 import java.util.HashSet;
+import java.util.UUID;
 
 public class Cidade {
 	
@@ -9,8 +10,11 @@ public class Cidade {
 	private HashSet<String> enderecos;
 	private HashSet<Imovel> garagens;
 	private HashSet<Imovel> residencias;
-		
-	public Cidade(){
+	private String nome;
+	private UUID id;
+
+	public Cidade(String nome){
+		this.nome = nome;
 		interseccoes = new HashSet<Interseccao>();
 		logradouros = new HashSet<Logradouro>();
 		enderecos = new HashSet<String>();
@@ -59,4 +63,11 @@ public class Cidade {
 		return residencias; 
 	}
 	
+	public String getNome(){
+		return this.nome;
+	}
+	
+	public UUID getId(){
+		return this.id;
+	}
 }
