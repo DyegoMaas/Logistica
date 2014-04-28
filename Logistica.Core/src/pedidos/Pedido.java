@@ -7,9 +7,6 @@ public class Pedido implements IPedido {
 		this.numeroPacotes = numeroPacotes;
 	}
 
-	/* (non-Javadoc)
-	 * @see pedidos.IPedido#getNumeroPacotes()
-	 */
 	@Override
 	public int getNumeroPacotes() {
 		return numeroPacotes;
