@@ -2,7 +2,11 @@ package pedidos.geracao;
 
 import java.util.Random;
 
+import estrutura.Cidade;
 import estrutura.Endereco;
+import estrutura.Imovel;
+import estrutura.Logradouro;
+import estrutura.Residencia;
 import pedidos.IPedido;
 import pedidos.Pedido;
 import pedidos.recepcao.IRecebedorPedidos;
@@ -12,9 +16,11 @@ public class GeradorPedidos implements Runnable{
 	
 	private boolean gerarPedidos = true;
 	private IRecebedorPedidos recebedorPedidos;
+	private Cidade cidade;
 	
-	public GeradorPedidos(IRecebedorPedidos recebedorPedidos){
-		this.recebedorPedidos = recebedorPedidos;		
+	public GeradorPedidos(IRecebedorPedidos recebedorPedidos, Cidade cidade){
+		this.recebedorPedidos = recebedorPedidos;
+		this.cidade = cidade;		
 	}
 
 	@Override
@@ -40,7 +46,12 @@ public class GeradorPedidos implements Runnable{
 	}	
 
 	private Endereco enderecoAleatorio() {
-		throw new NotImplementedException();
+		Imovel[] residencias = cidade.getResidencias();
+		
+		Random random = new Random();
+		Imovel residenciaEscolhida = residencias[random.nextInt(residencias.length)];
+				
+		return new Endereco(residenciaEscolhida.getLogradouro().getNome(), residenciaEscolhida.getNumero());
 	}
 
 	private int numeroPacotesAleatorio() {

@@ -43,5 +43,6 @@ public class Logradouro {
 
 	public void addImovel(Imovel imovel) {
 		this.imoveis.add(imovel);
+		imovel.setLogradouro(this);
 	}
 }

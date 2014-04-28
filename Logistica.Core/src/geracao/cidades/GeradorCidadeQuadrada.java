@@ -95,8 +95,8 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 	private void criarImovel(Logradouro logradouro, Interseccao interseccaoReferencia, TipoImovel tipoImovel){
 		LadoImovel ladoInterno = obterLadoInterno(logradouro, interseccaoReferencia);
 		Imovel imovel = tipoImovel == TipoImovel.GARAGEM 
-				? new Garagem(ladoInterno, numeroCaminhoesAleatorio()) 
-				: new Residencia(ladoInterno); 
+				? new Garagem(ladoInterno, numeroCaminhoesAleatorio(), 1) 
+				: new Residencia(ladoInterno, numeroDeResidenciaAleatorio()); 
 				
 		logradouro.addImovel(imovel);
 	}	
@@ -181,6 +181,10 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 	
 	private int numeroCaminhoesAleatorio() {
 		return new Random().nextInt(4);
+	}
+	
+	private int numeroDeResidenciaAleatorio() {
+		return new Random().nextInt(3) + 1;
 	}
 
 	private String gerarNome(int x, int y) {

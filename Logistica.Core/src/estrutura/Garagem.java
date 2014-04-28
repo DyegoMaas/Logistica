@@ -9,8 +9,8 @@ public class Garagem extends Imovel{
 	
 	Semaphore caminhoes;
 
-	public Garagem(LadoImovel ladoImovel, int numeroCaminhoes){
-		super(TipoImovel.GARAGEM, ladoImovel);
+	public Garagem(LadoImovel ladoImovel, int numero, int numeroCaminhoes){
+		super(TipoImovel.GARAGEM, ladoImovel, numero);
 		
 		caminhoes = new Semaphore(numeroCaminhoes);
 	}
