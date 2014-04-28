@@ -1,11 +1,14 @@
 package estrutura;
 
+import java.util.HashSet;
+
 public class Logradouro {
 	
 	private Interseccao interseccaoA;
 	private Interseccao interseccaoB;
 	private DirecaoAresta direcao;
 	private String nome;
+	private HashSet<Imovel> imoveis; 
 
 	public Logradouro(Interseccao interseccaoA, Interseccao interseccaoB, DirecaoAresta direcao, String nome){
 		this.interseccaoA = interseccaoA;
@@ -15,6 +18,7 @@ public class Logradouro {
 		
 		interseccaoA.addLogradouro(this);
 		interseccaoB.addLogradouro(this);
+		imoveis = new HashSet<Imovel>();
 	}
 
 	public Interseccao getInterseccaoA() {
@@ -31,5 +35,13 @@ public class Logradouro {
 
 	public String getNome() {
 		return nome;
+	}
+
+	public HashSet<Imovel> getImoveis() {
+		return imoveis;
+	}
+
+	public void addImovel(Imovel imovel) {
+		this.imoveis.add(imovel);
 	}
 }

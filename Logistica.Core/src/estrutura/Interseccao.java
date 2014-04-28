@@ -33,4 +33,8 @@ public class Interseccao {
 		return coordenadaX;
 	}
 
+	@Override
+	public String toString() {
+		return "Interseccao (" + coordenadaX + ", " + coordenadaY + ")";
+	}
 }

@@ -12,7 +12,7 @@ import estrutura.Cidade;
 public class GeradorCidadeQuadradaTeste {
 
 	@Test
-	public void tamanho_grafo_gerado(){
+	public void tamanho_grafo_gerado() throws Exception{
 		final int tamanho = 100;
 		
 		IGeradorCidade gerador = new GeradorCidadeQuadrada();		
