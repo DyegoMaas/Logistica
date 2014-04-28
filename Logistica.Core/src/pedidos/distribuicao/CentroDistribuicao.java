@@ -8,7 +8,7 @@ import estrutura.Endereco;
 import estrutura.Garagem;
 
 public class CentroDistribuicao {
-	
+
 	private FilaPedidos filaPedidos;
 	private List<Garagem> garagens;
 
