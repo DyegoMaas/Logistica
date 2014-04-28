@@ -95,11 +95,11 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 	private void criarImovel(Logradouro logradouro, Interseccao interseccaoReferencia, TipoImovel tipoImovel){
 		LadoImovel ladoInterno = obterLadoInterno(logradouro, interseccaoReferencia);
 		Imovel imovel = tipoImovel == TipoImovel.GARAGEM 
-				? new Garagem(ladoInterno) 
+				? new Garagem(ladoInterno, numeroCaminhoesAleatorio()) 
 				: new Residencia(ladoInterno); 
 				
 		logradouro.addImovel(imovel);
-	}
+	}	
 
 	private LadoImovel obterLadoInterno(Logradouro logradouro, Interseccao interseccaoReferencia) {
 		if(logradouro.getInterseccaoA() == interseccaoReferencia)
@@ -177,6 +177,10 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 			return DirecaoAresta.BIDIRECIONAL;
 		
 		return DirecaoAresta.UNIDIRECIONAL;
+	}
+	
+	private int numeroCaminhoesAleatorio() {
+		return new Random().nextInt(4);
 	}
 
 	private String gerarNome(int x, int y) {
