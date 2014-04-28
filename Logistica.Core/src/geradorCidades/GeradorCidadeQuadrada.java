@@ -4,10 +4,12 @@ import java.util.Random;
 
 import estrutura.Cidade;
 import estrutura.DirecaoAresta;
+import estrutura.Garagem;
 import estrutura.Imovel;
 import estrutura.Interseccao;
 import estrutura.LadoImovel;
 import estrutura.Logradouro;
+import estrutura.Residencia;
 import estrutura.TipoImovel;
 
 public class GeradorCidadeQuadrada implements IGeradorCidade {
@@ -92,7 +94,11 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 
 	private void criarImovel(Logradouro logradouro, Interseccao interseccaoReferencia, TipoImovel tipoImovel){
 		LadoImovel ladoInterno = obterLadoInterno(logradouro, interseccaoReferencia);
-		logradouro.addImovel(new Imovel(tipoImovel, ladoInterno));
+		Imovel imovel = tipoImovel == TipoImovel.GARAGEM 
+				? new Garagem(ladoInterno) 
+				: new Residencia(ladoInterno); 
+				
+		logradouro.addImovel(imovel);
 	}
 
 	private LadoImovel obterLadoInterno(Logradouro logradouro, Interseccao interseccaoReferencia) {
