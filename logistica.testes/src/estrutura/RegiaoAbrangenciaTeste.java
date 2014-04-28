@@ -1,5 +1,7 @@
 package estrutura;
 
+import estrutura.*;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
