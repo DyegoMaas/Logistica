@@ -2,9 +2,11 @@ package pedidos.geracao;
 
 import java.util.Random;
 
+import estrutura.Endereco;
 import pedidos.IPedido;
 import pedidos.Pedido;
 import pedidos.recepcao.IRecebedorPedidos;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class GeradorPedidos extends Thread{
 	
@@ -34,8 +36,12 @@ public class GeradorPedidos extends Thread{
 	}
 	
 	private IPedido novoPedido() {		
-		return new Pedido(numeroPacotesAleatorio());
+		return new Pedido(numeroPacotesAleatorio(), enderecoAleatorio());
 	}	
+
+	private Endereco enderecoAleatorio() {
+		throw new NotImplementedException();
+	}
 
 	private int numeroPacotesAleatorio() {
 		return new Random().nextInt(5) + 1;
