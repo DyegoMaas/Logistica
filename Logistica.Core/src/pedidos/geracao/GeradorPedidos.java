@@ -8,7 +8,7 @@ import pedidos.Pedido;
 import pedidos.recepcao.IRecebedorPedidos;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class GeradorPedidos extends Thread{
+public class GeradorPedidos implements Runnable{
 	
 	private boolean gerarPedidos = true;
 	private IRecebedorPedidos recebedorPedidos;
@@ -23,7 +23,7 @@ public class GeradorPedidos extends Thread{
 			recebedorPedidos.receberPedido(novoPedido());
 			
 			try {
-				sleep(50);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
