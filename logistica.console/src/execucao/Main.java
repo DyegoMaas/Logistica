@@ -41,8 +41,7 @@ public class Main {
 		
 		for (DelegadorPedidos delegadorPedidos : delegadores) {
 			delegadorPedidos.start();
-		}
-			
+		}			
 		
 		GeradorPedidos geradorPedidos = new GeradorPedidos(recebedorPedidos, cidade);		
 		geradorPedidos.start();

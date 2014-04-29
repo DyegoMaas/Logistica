@@ -1,7 +1,6 @@
 package pedidos.recepcao;
 
 import pedidos.IPedido;
-import pedidos.distribuicao.FilaPedidos;
 
 public class RecebedorPedidos implements IRecebedorPedidos{
 
