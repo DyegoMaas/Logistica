@@ -17,7 +17,12 @@ public class DelegadorPedidos implements IDelegadorPedidos{
 	public void delegar(IPedido pedido) {		
 		for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
 			if(centroDistribuicao.ehResponsavel(pedido.getEndereco())){
-				centroDistribuicao.distribuir(pedido);
+				try {
+					centroDistribuicao.distribuir(pedido);
+				} catch (Exception e) {
+					// TODO logar erro
+					e.printStackTrace();
+				}
 			}
 		}	
 	}

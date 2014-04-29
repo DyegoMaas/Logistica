@@ -3,6 +3,8 @@ package estrutura;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
+import pedidos.IPedido;
+
 public class Garagem extends Imovel{
 
 	public final int TIMEOUT_MS = 100;
@@ -21,7 +23,7 @@ public class Garagem extends Imovel{
 		return regiaoAbrangencia.estaNaAreaDeAbrangencia(endereco);
 	}
 	
-	public boolean entregar() throws InterruptedException{
+	public boolean entregar(IPedido pedido) throws InterruptedException{
 		if(caminhoes.tryAcquire(TIMEOUT_MS))
 		{
 			efetuarEntrega();

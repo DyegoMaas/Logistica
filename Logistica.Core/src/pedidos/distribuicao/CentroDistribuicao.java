@@ -2,6 +2,8 @@ package pedidos.distribuicao;
 
 import java.util.List;
 
+import javax.activity.InvalidActivityException;
+
 import pedidos.IPedido;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import estrutura.Endereco;
@@ -18,10 +20,26 @@ public class CentroDistribuicao {
 	}
 	
 	public boolean ehResponsavel(Endereco endereco){
-		return false;
+		return umaDasGaragensAtendeOEndereco(endereco);
+	}
+
+	public void distribuir(IPedido pedido) throws Exception{
+		Garagem garagem = garagemQueAtendeOEndereco(pedido.getEndereco());
+		if(garagem == null)
+			throw new Exception("Este centro de distribuicao nao pode efetuar a entrega do pedido " + pedido);
+		
+		garagem.entregar(pedido);
 	}
 	
-	public void distribuir(IPedido pedido){
-		throw new NotImplementedException();
+	private boolean umaDasGaragensAtendeOEndereco(Endereco endereco) {
+		return garagemQueAtendeOEndereco(endereco) != null;
+	}
+	
+	private Garagem garagemQueAtendeOEndereco(Endereco endereco) {
+		for (Garagem garagem : garagens) {
+			if(garagem.ehResponsavelPorEntregasNoEndereco(endereco))
+				return garagem;
+		}
+		return null;
 	}
 }
