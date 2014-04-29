@@ -4,27 +4,50 @@ import java.util.List;
 
 import pedidos.IPedido;
 import pedidos.distribuicao.CentroDistribuicao;
+import pedidos.distribuicao.FilaPedidos;
 
-public class DelegadorPedidos implements IDelegadorPedidos{
+public class DelegadorPedidos extends Thread implements IDelegadorPedidos{
 
 	private List<CentroDistribuicao> centrosDistribuicao;
+	private FilaPedidos filaPedidosEntrada;
+	private boolean continuarDelegacao = true;
 
-	public DelegadorPedidos(List<CentroDistribuicao> centrosDistribuicao){
+	public DelegadorPedidos(FilaPedidos filaPedidosEntrada, List<CentroDistribuicao> centrosDistribuicao){
+		this.filaPedidosEntrada = filaPedidosEntrada;
 		this.centrosDistribuicao = centrosDistribuicao;		
 	}
 	
 	@Override
-	public void delegar(IPedido pedido) {		
-		for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
-			if(centroDistribuicao.ehResponsavel(pedido.getEndereco())){
-				try {
-					centroDistribuicao.distribuir(pedido);
-				} catch (Exception e) {
-					// TODO logar erro
-					e.printStackTrace();
+	public void run(){
+		while(continuarDelegacao){
+			try {
+				IPedido pedido = filaPedidosEntrada.obterPedido();
+				
+				for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
+					if(centroDistribuicao.tentarAdicionar(pedido)){
+						break;
+					}
 				}
+			} catch (InterruptedException e) {
+				// TODO logar erro
+				e.printStackTrace();
 			}
-		}	
+			
+			aguardar(50);
+		}
+	}
+	
+	public void interromperDelegacao(){
+		continuarDelegacao = false;
 	}
 
+	private void aguardar(int duracao) {
+		try {
+			Thread.sleep(duracao);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }

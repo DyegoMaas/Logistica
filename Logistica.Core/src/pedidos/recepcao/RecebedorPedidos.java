@@ -1,18 +1,19 @@
 package pedidos.recepcao;
 
 import pedidos.IPedido;
+import pedidos.distribuicao.FilaPedidos;
 
 public class RecebedorPedidos implements IRecebedorPedidos{
 
-	private IDelegadorPedidos delegadorPedidos;
+	private FilaPedidos filaPedidos;
 
-	public RecebedorPedidos(IDelegadorPedidos delegadorPedidos){
-		this.delegadorPedidos = delegadorPedidos;		
+	public RecebedorPedidos(FilaPedidos filaPedidos){
+		this.filaPedidos = filaPedidos;
 	}
 	
 	@Override
 	public void receberPedido(IPedido pedido) {
-		delegadorPedidos.delegar(pedido);
+		filaPedidos.addPedido(pedido);
 	}
 
 }

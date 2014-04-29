@@ -11,19 +11,27 @@ import estrutura.Garagem;
 
 public class CentroDistribuicao {
 
-	private FilaPedidos filaPedidos;
+	private FilaPedidos filaPedidosCentro;
 	private List<Garagem> garagens;
 
-	public CentroDistribuicao(FilaPedidos filaPedidos, List<Garagem> garagens){
-		this.filaPedidos = filaPedidos;
+	public CentroDistribuicao(FilaPedidos filaPedidosCentro, List<Garagem> garagens){
+		this.filaPedidosCentro = filaPedidosCentro;
 		this.garagens = garagens; 
 	}
 	
-	public boolean ehResponsavel(Endereco endereco){
+	public synchronized boolean tentarAdicionar(IPedido pedido){
+		if(souResponsavel(pedido.getEndereco())){
+			filaPedidosCentro.addPedido(pedido);
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean souResponsavel(Endereco endereco){
 		return umaDasGaragensAtendeOEndereco(endereco);
 	}
 
-	public void distribuir(IPedido pedido) throws Exception{
+	private void distribuir(IPedido pedido) throws Exception{
 		Garagem garagem = garagemQueAtendeOEndereco(pedido.getEndereco());
 		if(garagem == null)
 			throw new Exception("Este centro de distribuicao nao pode efetuar a entrega do pedido " + pedido);
