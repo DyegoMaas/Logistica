@@ -105,8 +105,7 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 		
 		Imovel imovel = null;
 		if(tipoImovel == TipoImovel.GARAGEM){
-			Garagem garagem = new Garagem(contadorGaragens++, ladoInterno, numeroCaminhoesAleatorio(), 1, null);
-			Garagem garagem = new Garagem(ladoInterno, numeroCaminhoesAleatorio(), 1, novaRegiaoAbrangencia());
+			Garagem garagem = new Garagem(contadorGaragens++, ladoInterno, numeroCaminhoesAleatorio(), 1, novaRegiaoAbrangencia());
 			cidade.addGaragem(garagem);
 			imovel = garagem;
 		}
