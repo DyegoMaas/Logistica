@@ -15,6 +15,7 @@ import estrutura.TipoImovel;
 public class GeradorCidadeQuadrada implements IGeradorCidade {
 	
 	private Interseccao[][] interseccoes;
+	private int contadorGaragens = 0;
 	
 	@Override
 	public Cidade gerar(String nome, int tamanho) throws Exception{
@@ -97,7 +98,7 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 		
 		Imovel imovel = null;
 		if(tipoImovel == TipoImovel.GARAGEM){
-			Garagem garagem = new Garagem(ladoInterno, numeroCaminhoesAleatorio(), 1, null);
+			Garagem garagem = new Garagem(contadorGaragens++, ladoInterno, numeroCaminhoesAleatorio(), 1, null);
 			cidade.addGaragem(garagem);
 			imovel = garagem;
 		}
