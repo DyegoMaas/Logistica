@@ -51,33 +51,33 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 						int localizacaoGaragem = obterLocalizacaoGaragem();
 						switch(localizacaoGaragem){
 							case 0:
-								criarImovel(logradouroX, novaInterseccao, TipoImovel.GARAGEM);
+								criarImovel(cidade, logradouroX, novaInterseccao, TipoImovel.GARAGEM);
 							case 1:
-								criarImovel(logradouroY, novaInterseccao, TipoImovel.GARAGEM);
+								criarImovel(cidade, logradouroY, novaInterseccao, TipoImovel.GARAGEM);
 							case 2: {
 								Logradouro logradouroAdjacenteY = obterLogradouroAdjacente(novaInterseccao, interseccaoAnteriorY, interseccaoAnteriorX);
 								Interseccao interseccaoAnteriorXY = obterOutraInterseccao(logradouroAdjacenteY, interseccaoAnteriorY);
-								criarImovel(logradouroAdjacenteY, interseccaoAnteriorXY, TipoImovel.GARAGEM);
+								criarImovel(cidade, logradouroAdjacenteY, interseccaoAnteriorXY, TipoImovel.GARAGEM);
 							}
 							case 3: {
 								Logradouro logradouroAdjacenteX = obterLogradouroAdjacente(novaInterseccao, interseccaoAnteriorX, interseccaoAnteriorY);
-								criarImovel(logradouroAdjacenteX, interseccaoAnteriorX, TipoImovel.GARAGEM);
+								criarImovel(cidade, logradouroAdjacenteX, interseccaoAnteriorX, TipoImovel.GARAGEM);
 							}
 						}
 					} else {
-						criarImovel(logradouroX, novaInterseccao, TipoImovel.RESIDENCIA);
-						criarImovel(logradouroX, novaInterseccao, TipoImovel.RESIDENCIA);
-						criarImovel(logradouroY, interseccaoAnteriorY, TipoImovel.RESIDENCIA);
-						criarImovel(logradouroY, interseccaoAnteriorY, TipoImovel.RESIDENCIA);
+						criarImovel(cidade, logradouroX, novaInterseccao, TipoImovel.RESIDENCIA);
+						criarImovel(cidade, logradouroX, novaInterseccao, TipoImovel.RESIDENCIA);
+						criarImovel(cidade, logradouroY, interseccaoAnteriorY, TipoImovel.RESIDENCIA);
+						criarImovel(cidade, logradouroY, interseccaoAnteriorY, TipoImovel.RESIDENCIA);
 						
 						Logradouro logradouroAdjacenteX = obterLogradouroAdjacente(novaInterseccao, interseccaoAnteriorX, interseccaoAnteriorY);
-						criarImovel(logradouroAdjacenteX, interseccaoAnteriorX, TipoImovel.RESIDENCIA);
-						criarImovel(logradouroAdjacenteX, interseccaoAnteriorX, TipoImovel.RESIDENCIA);
+						criarImovel(cidade, logradouroAdjacenteX, interseccaoAnteriorX, TipoImovel.RESIDENCIA);
+						criarImovel(cidade, logradouroAdjacenteX, interseccaoAnteriorX, TipoImovel.RESIDENCIA);
 						
 						Logradouro logradouroAdjacenteY = obterLogradouroAdjacente(novaInterseccao, interseccaoAnteriorY, interseccaoAnteriorX);
 						Interseccao interseccaoAnteriorXY = obterOutraInterseccao(logradouroAdjacenteY, interseccaoAnteriorY);
-						criarImovel(logradouroAdjacenteY, interseccaoAnteriorXY, TipoImovel.RESIDENCIA);
-						criarImovel(logradouroAdjacenteY, interseccaoAnteriorXY, TipoImovel.RESIDENCIA);
+						criarImovel(cidade, logradouroAdjacenteY, interseccaoAnteriorXY, TipoImovel.RESIDENCIA);
+						criarImovel(cidade, logradouroAdjacenteY, interseccaoAnteriorXY, TipoImovel.RESIDENCIA);
 					}
 				}
 			}
@@ -92,11 +92,20 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 		return logradouro.getInterseccaoA();
 	}
 
-	private void criarImovel(Logradouro logradouro, Interseccao interseccaoReferencia, TipoImovel tipoImovel){
+	private void criarImovel(Cidade cidade, Logradouro logradouro, Interseccao interseccaoReferencia, TipoImovel tipoImovel){
 		LadoImovel ladoInterno = obterLadoInterno(logradouro, interseccaoReferencia);
-		Imovel imovel = tipoImovel == TipoImovel.GARAGEM 
-				? new Garagem(ladoInterno, numeroCaminhoesAleatorio(), 1) 
-				: new Residencia(ladoInterno, numeroDeResidenciaAleatorio()); 
+		
+		Imovel imovel = null;
+		if(tipoImovel == TipoImovel.GARAGEM){
+			Garagem garagem = new Garagem(ladoInterno, numeroCaminhoesAleatorio(), 1, null);
+			cidade.addGaragem(garagem);
+			imovel = garagem;
+		}
+		else {			
+			Residencia residencia = new Residencia(ladoInterno, numeroDeResidenciaAleatorio());
+			cidade.addResidencia(residencia);
+			imovel = residencia;
+		} 
 				
 		logradouro.addImovel(imovel);
 	}	

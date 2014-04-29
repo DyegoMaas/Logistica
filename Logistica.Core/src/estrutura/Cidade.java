@@ -8,8 +8,8 @@ public class Cidade {
 	private HashSet<Interseccao> interseccoes;
 	private HashSet<Logradouro> logradouros;
 	private HashSet<String> enderecos;
-	private HashSet<Imovel> garagens;
-	private HashSet<Imovel> residencias;
+	private HashSet<Garagem> garagens;
+	private HashSet<Residencia> residencias;
 	private String nome;
 	private UUID id;
 
@@ -19,6 +19,9 @@ public class Cidade {
 		interseccoes = new HashSet<Interseccao>();
 		logradouros = new HashSet<Logradouro>();
 		enderecos = new HashSet<String>();
+		
+		residencias = new HashSet<Residencia>();
+		garagens = new HashSet<Garagem>();
 	}
 	
 	public void addLogradouro(Logradouro logradouro){	
@@ -50,11 +53,19 @@ public class Cidade {
 		return enderecos; 
 	}
 	
+	public void addGaragem(Garagem garagem) {
+		this.garagens.add(garagem);
+	}
+	
 	public Imovel[] getGaragens() {
 		Imovel[] garagens = new Imovel[this.garagens.size()];
 		this.garagens.toArray(garagens);
 		
 		return garagens; 
+	}
+	
+	public void addResidencia(Residencia residencia) {
+		this.residencias.add(residencia);
 	}
 	
 	public Imovel[] getResidencias() {
@@ -67,6 +78,7 @@ public class Cidade {
 	public String getNome(){
 		return this.nome;
 	}
+
 	
 	public UUID getId(){
 		return this.id;

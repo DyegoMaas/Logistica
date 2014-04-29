@@ -7,12 +7,18 @@ public class Garagem extends Imovel{
 
 	public final int TIMEOUT_MS = 100;
 	
-	Semaphore caminhoes;
-
-	public Garagem(LadoImovel ladoImovel, int numero, int numeroCaminhoes){
+	private IRegiaoAbrangencia regiaoAbrangencia;
+	private Semaphore caminhoes;
+	
+	public Garagem(LadoImovel ladoImovel, int numero, int numeroCaminhoes, IRegiaoAbrangencia regiaoAbrangencia){
 		super(TipoImovel.GARAGEM, ladoImovel, numero);
+		this.regiaoAbrangencia = regiaoAbrangencia;
 		
 		caminhoes = new Semaphore(numeroCaminhoes);
+	}
+	
+	public boolean ehResponsavelPorEntregasNoEndereco(Endereco endereco){
+		return regiaoAbrangencia.estaNaAreaDeAbrangencia(endereco);
 	}
 	
 	public boolean entregar() throws InterruptedException{

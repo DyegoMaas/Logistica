@@ -4,7 +4,7 @@ public abstract class Imovel {
 
 	private TipoImovel tipoImovel;
 	private LadoImovel localizacaoImovel;
-	private Logradouro logradouro;
+	private Logradouro logradouro = null;
 	private int numero;
 
 	public Imovel(TipoImovel tipoImovel, LadoImovel localizacaoImovel, int numero) {
