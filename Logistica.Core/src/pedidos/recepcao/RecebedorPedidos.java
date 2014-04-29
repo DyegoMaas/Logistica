@@ -14,6 +14,7 @@ public class RecebedorPedidos implements IRecebedorPedidos{
 	@Override
 	public void receberPedido(IPedido pedido) {
 		filaPedidos.addPedido(pedido);
+		System.out.printf("pedido %d recebido\n", pedido.getNumeroPacotes());
 	}
 
 }

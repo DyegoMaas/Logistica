@@ -1,14 +1,17 @@
 package geracao.cidades;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import estrutura.Cidade;
 import estrutura.DirecaoAresta;
 import estrutura.Garagem;
+import estrutura.IRegiaoAbrangencia;
 import estrutura.Imovel;
 import estrutura.Interseccao;
 import estrutura.LadoImovel;
 import estrutura.Logradouro;
+import estrutura.RegiaoAbrangencia;
 import estrutura.Residencia;
 import estrutura.TipoImovel;
 
@@ -16,6 +19,7 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 	
 	private Interseccao[][] interseccoes;
 	private int contadorGaragens = 0;
+	ArrayList<String> logradourosAbrangidos = new ArrayList<String>();
 	
 	@Override
 	public Cidade gerar(String nome, int tamanho) throws Exception{
@@ -31,9 +35,10 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 				Interseccao interseccaoAnteriorY = null;
 				int ultimoY = y -1;
 				if(ultimoY >= 0){
-					interseccaoAnteriorY = interseccoes[x][ultimoY];					
+					interseccaoAnteriorY = interseccoes[x][ultimoY];
 					
 					logradouroY = criarLogradouro(x, y, novaInterseccao, interseccaoAnteriorY);
+					logradourosAbrangidos.add(logradouroY.getNome());					
 					cidade.addLogradouro(logradouroY);
 				}
 				
@@ -42,7 +47,9 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 				int ultimoX = x -1;
 				if(ultimoX >= 0){
 					interseccaoAnteriorX = interseccoes[ultimoX][y];
+					
 					logradouroX = criarLogradouro(x, y, novaInterseccao, interseccaoAnteriorX);
+					logradourosAbrangidos.add(logradouroX.getNome());
 					cidade.addLogradouro(logradouroX);
 				}
 				
@@ -99,6 +106,7 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 		Imovel imovel = null;
 		if(tipoImovel == TipoImovel.GARAGEM){
 			Garagem garagem = new Garagem(contadorGaragens++, ladoInterno, numeroCaminhoesAleatorio(), 1, null);
+			Garagem garagem = new Garagem(ladoInterno, numeroCaminhoesAleatorio(), 1, novaRegiaoAbrangencia());
 			cidade.addGaragem(garagem);
 			imovel = garagem;
 		}
@@ -110,6 +118,14 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 				
 		logradouro.addImovel(imovel);
 	}	
+
+	private IRegiaoAbrangencia novaRegiaoAbrangencia() {
+		String[] nomesLogradouros = new String[logradourosAbrangidos.size()];
+		logradourosAbrangidos.toArray(nomesLogradouros);
+		logradourosAbrangidos.clear();
+		
+		return new RegiaoAbrangencia(nomesLogradouros);
+	}
 
 	private LadoImovel obterLadoInterno(Logradouro logradouro, Interseccao interseccaoReferencia) {
 		if(logradouro.getInterseccaoA() == interseccaoReferencia)

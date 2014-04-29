@@ -10,9 +10,11 @@ public class CentroDistribuicao {
 	private FilaPedidos filaPedidosCentro;
 	private Garagem garagem;
 	//private List<Garagem> garagens;
+	private int idCentroDistribuicao;
 
 	//public CentroDistribuicao(FilaPedidos filaPedidosCentro, List<Garagem> garagens) {
-	public CentroDistribuicao(FilaPedidos filaPedidosCentro, Garagem garagem) {
+	public CentroDistribuicao(int idCentroDistribuicao, FilaPedidos filaPedidosCentro, Garagem garagem) {
+		this.idCentroDistribuicao = idCentroDistribuicao;
 		this.filaPedidosCentro = filaPedidosCentro;
 		this.garagem = garagem;
 		//this.garagens = garagens;
@@ -51,5 +53,14 @@ public class CentroDistribuicao {
 //				return garagem;
 //		}
 //		return null;
+	}
+	
+	@Override
+	public String toString(){
+		return String.valueOf(idCentroDistribuicao);
+	}
+
+	public int getId() {
+		return idCentroDistribuicao;
 	}
 }

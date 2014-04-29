@@ -17,7 +17,7 @@ public class FilaPedidos {
 	public synchronized void addPedido(IPedido novoPedido){
 		pedidos.add(novoPedido);
 		contadorNumeroPacotes += novoPedido.getNumeroPacotes();
-		System.out.printf("adicionado pedido de %d pacotes", novoPedido.getNumeroPacotes());
+		System.out.printf("pedido de %d pacotes adicionado na fila\n", novoPedido.getNumeroPacotes());
 
 		notifyAll();
 	}

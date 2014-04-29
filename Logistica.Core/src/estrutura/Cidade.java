@@ -57,8 +57,8 @@ public class Cidade {
 		this.garagens.add(garagem);
 	}
 	
-	public Imovel[] getGaragens() {
-		Imovel[] garagens = new Imovel[this.garagens.size()];
+	public Garagem[] getGaragens() {
+		Garagem[] garagens = new Garagem[this.garagens.size()];
 		this.garagens.toArray(garagens);
 		
 		return garagens; 
@@ -68,8 +68,8 @@ public class Cidade {
 		this.residencias.add(residencia);
 	}
 	
-	public Imovel[] getResidencias() {
-		Imovel[] residencias = new Imovel[this.residencias.size()];
+	public Residencia[] getResidencias() {
+		Residencia[] residencias = new Residencia[this.residencias.size()];
 		this.residencias.toArray(residencias);
 		
 		return residencias; 

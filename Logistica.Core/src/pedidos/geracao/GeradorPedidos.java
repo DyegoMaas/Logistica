@@ -12,7 +12,7 @@ import pedidos.Pedido;
 import pedidos.recepcao.IRecebedorPedidos;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class GeradorPedidos implements Runnable{
+public class GeradorPedidos extends Thread {
 	
 	private boolean gerarPedidos = true;
 	private IRecebedorPedidos recebedorPedidos;
@@ -25,7 +25,7 @@ public class GeradorPedidos implements Runnable{
 
 	@Override
 	public void run(){
-		while(deveGerarPedidos()) {
+		while(deveGerarPedidos()) {			
 			recebedorPedidos.receberPedido(novoPedido());
 			
 			try {
