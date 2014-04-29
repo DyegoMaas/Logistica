@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Caminhao {
 	private int capacidadeEmPacotes;
+	private int pacotesCarregados;
 	
 	private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 	private final Lock read = readWriteLock.readLock();
@@ -19,15 +20,19 @@ public class Caminhao {
 		this.capacidadeEmPacotes = capacidadeEmPacotes;		
 	}
 	
-	public void carregarPacotes(int numeroPacotes){
-		
+	public synchronized int getCapacidadeDisponivel(){
+		return capacidadeEmPacotes - pacotesCarregados;
 	}
 	
-	public void efetuarEntregas(){
+	public void carregarPacotes(int numeroPacotes){
+		pacotesCarregados += numeroPacotes;
+	}
+	
+	public void efetuarEntregas() throws InterruptedException{
 		read.lock();
 		
-//		while(capacidadeEmPacotes)
-//			temDinheiro.await();
+		while(pacotesCarregados < capacidadeEmPacotes)
+			caminhaoCheio.await();
 		
 		try {
 //			System.out.printf("Withdrawing %f", amount);
