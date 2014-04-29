@@ -2,22 +2,22 @@ package pedidos.geracao;
 
 import java.util.Random;
 
-import estrutura.Cidade;
-import estrutura.Endereco;
-import estrutura.Imovel;
-import estrutura.Logradouro;
-import estrutura.Residencia;
 import pedidos.IPedido;
 import pedidos.Pedido;
 import pedidos.recepcao.IRecebedorPedidos;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import servicos.IServico;
+import utils.DelayHelper;
+import estrutura.Cidade;
+import estrutura.Endereco;
+import estrutura.Imovel;
 
-public class GeradorPedidos extends Thread {
+public class GeradorPedidos extends Thread implements IServico{
 	
-	private boolean gerarPedidos = true;
+	private boolean deveGerarPedidos = true;
+	private int intervaloExecucao;
 	private IRecebedorPedidos recebedorPedidos;
 	private Cidade cidade;
-	
+		
 	public GeradorPedidos(IRecebedorPedidos recebedorPedidos, Cidade cidade){
 		this.recebedorPedidos = recebedorPedidos;
 		this.cidade = cidade;		
@@ -25,22 +25,12 @@ public class GeradorPedidos extends Thread {
 
 	@Override
 	public void run(){
-		while(deveGerarPedidos()) {			
-			recebedorPedidos.receberPedido(novoPedido());
-			
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		while(deveGerarPedidos) {			
+			recebedorPedidos.receberPedido(novoPedido());			
+			DelayHelper.aguardar(intervaloExecucao);
 		}
 	}
-	
-	public void interromperGeracaoPedidos(){
-		gerarPedidos = false;
-	}
-	
+		
 	private IPedido novoPedido() {		
 		return new Pedido(numeroPacotesAleatorio(), enderecoAleatorio());
 	}	
@@ -58,8 +48,20 @@ public class GeradorPedidos extends Thread {
 		return new Random().nextInt(5) + 1;
 	}
 
-	private boolean deveGerarPedidos() {
-		return gerarPedidos;
+	@Override
+	public void definirIntervaloExecucao(int milisegundos) {
+		intervaloExecucao = milisegundos;
+	}
+
+	@Override
+	public void interromper() {
+		deveGerarPedidos = false;
+	}
+
+	@Override
+	public void retomar() {
+		deveGerarPedidos = true;
+		start();
 	}
 	
 }
