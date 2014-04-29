@@ -25,16 +25,11 @@ public class Garagem extends Imovel{
 	public boolean ehResponsavelPorEntregasNoEndereco(Endereco endereco){
 		return regiaoAbrangencia.estaNaAreaDeAbrangencia(endereco);
 	}
-	
-	public boolean entregar(Entrega entrega) throws InterruptedException{
-		if(caminhoes.tryAcquire(TIMEOUT_MS))
-		{
-			efetuarEntrega(entrega);
-			caminhoes.release();
-			return true;
-		}
-		else
-			return false;
+
+	public void entregar(Entrega entrega) throws InterruptedException{
+		caminhoes.acquire();
+		efetuarEntrega(entrega);
+		caminhoes.release();
 	}
 
 	private void efetuarEntrega(Entrega entrega) throws InterruptedException {
