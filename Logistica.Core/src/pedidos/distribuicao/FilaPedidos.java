@@ -1,28 +1,53 @@
 package pedidos.distribuicao;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import pedidos.IPedido;
+import pedidos.entregas.Entrega;
 
 public class FilaPedidos {
 
+	private final int NUMERO_MINIMO_PEDIDOS_ENTREGA = 50;
 	private Queue<IPedido> pedidos = new LinkedList<IPedido>();
+	private int contadorNumeroPacotes = 0;
 	
 	public synchronized void addPedido(IPedido novoPedido){
 		pedidos.add(novoPedido);
+		contadorNumeroPacotes += novoPedido.getNumeroPacotes();
 		System.out.printf("adicionado pedido de %d pacotes", novoPedido.getNumeroPacotes());
 
 		notifyAll();
 	}
 	
-	public synchronized IPedido obterPedido() throws InterruptedException {
-		while(pedidos.size() == 0)
+	public synchronized Entrega obterEntrega() throws InterruptedException {
+		while(!possuiNumeroMinimoPedidos())
 			wait();
 		
-		IPedido pedido = pedidos.poll();
-		System.out.printf("consumido pedido de %d pacotes", pedido.getNumeroPacotes());
-		
-		return pedido;
+		Entrega entrega = gerarEntrega();
+		System.out.printf("Gerada entrega %s", entrega.toString());
+
+		return entrega;
+	}
+
+	private boolean possuiNumeroMinimoPedidos() {
+		return contadorNumeroPacotes >= 50;
+	}
+	
+	private Entrega gerarEntrega(){
+		List<IPedido> pedidosEntrega = new ArrayList<IPedido>();
+		int contadorPacotesEntrega = 0;
+		IPedido pedidoPeek = pedidos.peek();
+		contadorPacotesEntrega += pedidoPeek.getNumeroPacotes();
+		while(contadorPacotesEntrega < 50){
+			IPedido pedidoPoll = pedidos.poll();
+			pedidosEntrega.add(pedidoPoll);
+			contadorNumeroPacotes -= pedidoPoll.getNumeroPacotes();
+			pedidoPeek = pedidos.peek();
+			contadorPacotesEntrega += pedidoPeek.getNumeroPacotes();
+		}
+		return new Entrega(pedidosEntrega);
 	}
 }

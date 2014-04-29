@@ -3,7 +3,10 @@ package estrutura;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
+import org.omg.PortableServer.ForwardRequestHelper;
+
 import pedidos.IPedido;
+import pedidos.entregas.Entrega;
 
 public class Garagem extends Imovel{
 
@@ -23,11 +26,10 @@ public class Garagem extends Imovel{
 		return regiaoAbrangencia.estaNaAreaDeAbrangencia(endereco);
 	}
 	
-	public boolean entregar(IPedido pedido) throws InterruptedException{
+	public boolean entregar(Entrega entrega) throws InterruptedException{
 		if(caminhoes.tryAcquire(TIMEOUT_MS))
 		{
-			efetuarEntrega();
-			
+			efetuarEntrega(entrega);
 			caminhoes.release();
 			return true;
 		}
@@ -35,14 +37,16 @@ public class Garagem extends Imovel{
 			return false;
 	}
 
-	private void efetuarEntrega() throws InterruptedException {
-		// TODO logar entrega
-		Thread.sleep(tempoViagemAleatorio());
+	private void efetuarEntrega(Entrega entrega) throws InterruptedException {
+		System.out.println("Efetuando entregas.");
+		for(IPedido pedido : entrega.getPedidos()){
+			Thread.sleep(tempoViagemAleatorio(pedido.getNumeroPacotes()));
+		}
 	}
 
-	private int tempoViagemAleatorio() {
+	private int tempoViagemAleatorio(int variacao) {
 		Random random = new Random();
-		return random.nextInt(150);
+		return random.nextInt(150 * variacao);
 	}	
 	
 }

@@ -9,10 +9,10 @@ import pedidos.distribuicao.FilaPedidos;
 public class DelegadorPedidos extends Thread implements IDelegadorPedidos{
 
 	private List<CentroDistribuicao> centrosDistribuicao;
-	private FilaPedidos filaPedidosEntrada;
+	private FilaPedidosEntrada filaPedidosEntrada;
 	private boolean continuarDelegacao = true;
 
-	public DelegadorPedidos(FilaPedidos filaPedidosEntrada, List<CentroDistribuicao> centrosDistribuicao){
+	public DelegadorPedidos(FilaPedidosEntrada filaPedidosEntrada, List<CentroDistribuicao> centrosDistribuicao){
 		this.filaPedidosEntrada = filaPedidosEntrada;
 		this.centrosDistribuicao = centrosDistribuicao;		
 	}

@@ -5,9 +5,9 @@ import pedidos.distribuicao.FilaPedidos;
 
 public class RecebedorPedidos implements IRecebedorPedidos{
 
-	private FilaPedidos filaPedidos;
+	private FilaPedidosEntrada filaPedidos;
 
-	public RecebedorPedidos(FilaPedidos filaPedidos){
+	public RecebedorPedidos(FilaPedidosEntrada filaPedidos){
 		this.filaPedidos = filaPedidos;
 	}
 	
