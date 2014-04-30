@@ -20,6 +20,7 @@ import pedidos.recepcao.FilaPedidosEntrada;
 import pedidos.recepcao.IRecebedorPedidos;
 import pedidos.recepcao.RecebedorPedidos;
 import componentes.FilaPanel;
+import componentes.ServicoColorPanel;
 import componentes.ServicoPanel;
 import estrutura.Cidade;
 import estrutura.Garagem;
@@ -80,7 +81,7 @@ public class Main {
 		panelDelegadores.setLayout(new BoxLayout(panelDelegadores, BoxLayout.Y_AXIS));
 
 		for (DelegadorPedidos delegadorPedidos : delegadores) {
-			panelDelegadores.add(new ServicoPanel("Delegador", delegadorPedidos));
+			panelDelegadores.add(new ServicoColorPanel("Delegador", delegadorPedidos));
 		}
 
 		JScrollPane scrollPane = new JScrollPane(panelDelegadores);

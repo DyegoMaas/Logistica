@@ -8,6 +8,7 @@ import pedidos.IPedido;
 import pedidos.Pedido;
 import pedidos.recepcao.IRecebedorPedidos;
 import servicos.IServico;
+import servicos.StatusExecucaoServico;
 import utils.DelayHelper;
 import estrutura.Cidade;
 import estrutura.Endereco;
@@ -112,5 +113,11 @@ public class GeradorPedidos extends Thread implements IServico {
 	@Override
 	public int getIntervaloExecucao() {
 		return intervaloExecucao;
+	}
+
+	@Override
+	public StatusExecucaoServico getStatusExecucao() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

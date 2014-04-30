@@ -18,15 +18,16 @@ import servicos.IServico;
 import servicos.IServicoComPropertyChangeSupport;
 import servicos.StatusExecucaoServico;
 
-public class ServicoPanel extends JPanel {
+public class ServicoColorPanel extends JPanel implements PropertyChangeListener {
 
 	private IServico servico;
 	private String tituloServico;
 	private JLabel labelTitulo;
 
-	public ServicoPanel(String tituloServico, IServico servico) {
+	public ServicoColorPanel(String tituloServico, IServicoComPropertyChangeSupport servico) {
 		this.tituloServico = tituloServico;
 		this.servico = servico;
+		servico.addPropertyChangeListener(this);
 		this.setLayout(new GridLayout(3, 1));
 		String textoBotao = "Parar";
 		if (!servico.isExecutando())
@@ -40,12 +41,12 @@ public class ServicoPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					ServicoPanel.this.servico.interromperOuExecutar();
+					ServicoColorPanel.this.servico.interromperOuExecutar();
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				if (ServicoPanel.this.servico.isExecutando()) {
+				if (ServicoColorPanel.this.servico.isExecutando()) {
 					botaoPararContinuar.setLabel("Parar");
 				} else {
 					botaoPararContinuar.setLabel("Continuar");
@@ -55,7 +56,7 @@ public class ServicoPanel extends JPanel {
 		textFieldIntervaloGeracaoPedidos.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				ServicoPanel.this.servico.definirIntervaloExecucao(Integer.valueOf(textFieldIntervaloGeracaoPedidos.getText()));
+				ServicoColorPanel.this.servico.definirIntervaloExecucao(Integer.valueOf(textFieldIntervaloGeracaoPedidos.getText()));
 			}
 		});
 		labelTitulo = new JLabel(tituloServico);
@@ -64,5 +65,17 @@ public class ServicoPanel extends JPanel {
 		this.add(botaoPararContinuar);
 		this.add(textFieldIntervaloGeracaoPedidos);
 		this.setSize(100, 60);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		StatusExecucaoServico statusServico = servico.getStatusExecucao();
+		if (statusServico != null && statusServico == StatusExecucaoServico.EXECUTANDO) {
+			labelTitulo.setBackground(Color.GREEN);
+			this.setBackground(Color.GREEN);
+		} else {
+			labelTitulo.setBackground(Color.BLUE);
+			this.setBackground(Color.BLUE);
+		}
 	}
 }

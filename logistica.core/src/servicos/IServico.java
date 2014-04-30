@@ -7,4 +7,5 @@ public interface IServico {
 	void executar();
 	void interromperOuExecutar() throws InterruptedException;
 	boolean isExecutando();
+	StatusExecucaoServico getStatusExecucao();
 }

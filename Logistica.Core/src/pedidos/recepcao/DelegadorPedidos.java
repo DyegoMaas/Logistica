@@ -1,16 +1,23 @@
 package pedidos.recepcao;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import pedidos.IPedido;
 import pedidos.distribuicao.CentroDistribuicao;
+import servicos.StatusExecucaoServico;
 import servicos.IServico;
+import servicos.IServicoComPropertyChangeSupport;
 import utils.DelayHelper;
 
-public class DelegadorPedidos extends Thread implements IServico {
+public class DelegadorPedidos extends Thread implements IServicoComPropertyChangeSupport {
 
+	private PropertyChangeSupport changes = new PropertyChangeSupport(this);
+	
+	private StatusExecucaoServico statusExecucaoServico = null;
 	private final ReentrantLock lock = new ReentrantLock();
 	private Condition podeContinuar = lock.newCondition();
 	
@@ -28,12 +35,20 @@ public class DelegadorPedidos extends Thread implements IServico {
 	public void run() {
 		while(true){
 			lock.lock();
-			
+
 			try {
 				while(!continuarDelegacao)
 					podeContinuar.await();
-				
+
+				StatusExecucaoServico statusExecucaoServicoAnterior = statusExecucaoServico;
+				statusExecucaoServico = StatusExecucaoServico.AGUARDANDO;
+				changes.firePropertyChange("statusExecucaoServico", statusExecucaoServicoAnterior, statusExecucaoServico);
+
 				IPedido pedido = filaPedidosEntrada.obterPedido();
+
+				statusExecucaoServicoAnterior = statusExecucaoServico;
+				statusExecucaoServico = StatusExecucaoServico.EXECUTANDO;
+				changes.firePropertyChange("statusExecucaoServico", statusExecucaoServicoAnterior, statusExecucaoServico);
 				
 				for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
 					if (centroDistribuicao.tentarAdicionar(pedido)) {
@@ -41,13 +56,13 @@ public class DelegadorPedidos extends Thread implements IServico {
 						break;
 					}
 				}
-				
+
 				DelayHelper.aguardar(intervaloExecucao);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			lock.unlock();
 		}
 	}
@@ -94,6 +109,21 @@ public class DelegadorPedidos extends Thread implements IServico {
 	@Override
 	public int getIntervaloExecucao() {
 		return intervaloExecucao;
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener l) {
+		changes.addPropertyChangeListener(l);
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener l) {
+		changes.removePropertyChangeListener(l);
+	}
+
+	@Override
+	public StatusExecucaoServico getStatusExecucao() {
+		return statusExecucaoServico;
 	}
 	
 }

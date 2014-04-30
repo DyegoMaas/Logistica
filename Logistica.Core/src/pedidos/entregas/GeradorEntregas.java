@@ -5,6 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import pedidos.distribuicao.CentroDistribuicao;
 import servicos.IServico;
+import servicos.StatusExecucaoServico;
 import utils.DelayHelper;
 
 public class GeradorEntregas extends Thread implements IServico {
@@ -85,5 +86,11 @@ public class GeradorEntregas extends Thread implements IServico {
 	@Override
 	public int getIntervaloExecucao() {
 		return intervaloExecucao;
+	}
+
+	@Override
+	public StatusExecucaoServico getStatusExecucao() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
