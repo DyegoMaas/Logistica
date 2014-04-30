@@ -31,8 +31,13 @@ public class FilaPedidosEntrada implements IFila {
 		return pedido;
 	}
 
+<<<<<<< Updated upstream
 	@Override
 	public synchronized int getNumeroItens() {
+		return pedidos.size();
+	}
+=======
+	public int getTamanho(){
 		return pedidos.size();
 	}
 
@@ -43,4 +48,5 @@ public class FilaPedidosEntrada implements IFila {
 	public void removePropertyChangeListener(PropertyChangeListener l) {
 		changes.removePropertyChangeListener(l);
 	}
+>>>>>>> Stashed changes
 }

@@ -4,19 +4,19 @@ import pedidos.distribuicao.CentroDistribuicao;
 import servicos.IServico;
 import utils.DelayHelper;
 
-public class GeradorEntregas extends Thread implements IServico{
+public class GeradorEntregas extends Thread implements IServico {
 
 	private boolean continuarGerandoEntregas = true;
 	private CentroDistribuicao centroDistribuicao;
 	private int intervaloExecucao;
 
-	public GeradorEntregas(CentroDistribuicao centroDistribuicao){
+	public GeradorEntregas(CentroDistribuicao centroDistribuicao) {
 		this.centroDistribuicao = centroDistribuicao;
 	}
 
 	@Override
 	public void run() {
-		while(continuarGerandoEntregas){
+		while (continuarGerandoEntregas) {
 			try {
 				centroDistribuicao.fazerEntrega();
 				DelayHelper.aguardar(intervaloExecucao);
@@ -27,7 +27,7 @@ public class GeradorEntregas extends Thread implements IServico{
 			}
 		}
 	}
-	
+
 	@Override
 	public void definirIntervaloExecucao(int milisegundos) {
 		this.intervaloExecucao = milisegundos;
@@ -35,7 +35,7 @@ public class GeradorEntregas extends Thread implements IServico{
 
 	@Override
 	public void interromper() {
-		continuarGerandoEntregas = false;		
+		continuarGerandoEntregas = false;
 	}
 
 	@Override

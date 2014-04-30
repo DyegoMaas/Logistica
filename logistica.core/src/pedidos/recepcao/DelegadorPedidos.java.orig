@@ -57,6 +57,13 @@ public class DelegadorPedidos extends Thread implements IServico {
 	}
 
 	@Override
+	public void interromperExecutar() {
+		// TODO Auto-generated method stub
+
+	}
+
+<<<<<<< Updated upstream
+	@Override
 	public void interromperOuExecutar() {
 		if(continuarDelegacao){
 			interromper();
@@ -65,10 +72,7 @@ public class DelegadorPedidos extends Thread implements IServico {
 			executar();
 		}
 	}
-
-	@Override
-	public boolean isExecutando() {
-		return continuarDelegacao;
-	}
 	
+=======
+>>>>>>> Stashed changes
 }

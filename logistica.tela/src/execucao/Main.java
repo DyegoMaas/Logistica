@@ -1,12 +1,12 @@
 package execucao;
 
-import estrutura.Cidade;
-import estrutura.Garagem;
-import geracao.cidades.GeradorCidadeQuadrada;
-import geracao.cidades.IGeradorCidade;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import pedidos.distribuicao.CentroDistribuicao;
 import pedidos.distribuicao.FilaPedidos;
@@ -16,12 +16,18 @@ import pedidos.recepcao.DelegadorPedidos;
 import pedidos.recepcao.FilaPedidosEntrada;
 import pedidos.recepcao.IRecebedorPedidos;
 import pedidos.recepcao.RecebedorPedidos;
+import componentes.FilaPanel;
+import componentes.ServicoPanel;
+import estrutura.Cidade;
+import estrutura.Garagem;
+import geracao.cidades.GeradorCidadeQuadrada;
+import geracao.cidades.IGeradorCidade;
 
 public class Main {
 	private static final int NUMERO_PEDIDOS_POR_ENTREGA = 5;
-	
-	public static void main(String[] args) throws Exception{
-		Cidade cidade = gerarCidade(25);			
+
+	public static void main(String[] args) throws Exception {
+		Cidade cidade = gerarCidade(25);
 		FilaPedidosEntrada filaEntrada = new FilaPedidosEntrada();
 		IRecebedorPedidos recebedorPedidos = new RecebedorPedidos(filaEntrada);
 
@@ -38,14 +44,30 @@ public class Main {
 
 		DelegadorPedidos[] delegadores = new DelegadorPedidos[] { new DelegadorPedidos(filaEntrada, centrosDistribuicao), new DelegadorPedidos(filaEntrada, centrosDistribuicao), new DelegadorPedidos(filaEntrada, centrosDistribuicao), new DelegadorPedidos(filaEntrada, centrosDistribuicao) };
 
-		GeradorPedidos geradorPedidos = new GeradorPedidos(recebedorPedidos, cidade);	
+		GeradorPedidos geradorPedidos = new GeradorPedidos(recebedorPedidos, cidade);
 		geradorPedidos.definirIntervaloExecucao(20);
+
+		JFrame frame = new JFrame();
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setSize(500, 100);
+		frame.add(panel);
+		panel.add(new ServicoPanel("Gerador pedidos", geradorPedidos));
+		panel.add(new FilaPanel("Fila pedidos entrada", filaEntrada));
+		JPanel panelDelegadores = new JPanel();
+		JScrollPane scrollPane = new JScrollPane(panelDelegadores);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+
 		geradorPedidos.executar();
-		
+
 		for (DelegadorPedidos delegadorPedidos : delegadores) {
 			delegadorPedidos.definirIntervaloExecucao(50);
 			delegadorPedidos.executar();
-		}	
+		}
 
 		for (GeradorEntregas geradorEntregas : geradoresEntrega) {
 			geradorEntregas.definirIntervaloExecucao(100);
@@ -54,7 +76,7 @@ public class Main {
 	}
 
 	private static Cidade gerarCidade(int tamanho) throws Exception {
-		IGeradorCidade geradorCidade = new GeradorCidadeQuadrada();		
+		IGeradorCidade geradorCidade = new GeradorCidadeQuadrada();
 		return geradorCidade.gerar("Timbo", tamanho);
 	}
 }
