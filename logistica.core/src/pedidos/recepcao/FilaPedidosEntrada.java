@@ -27,6 +27,7 @@ public class FilaPedidosEntrada implements IFilaComPropertyChangeSupport {
 			wait();
 
 		IPedido pedido = pedidos.poll();
+		changes.firePropertyChange("pedidos", null, pedidos);
 		System.out.printf("pedido %s obtido da fila de entrada\n", pedido.getIdPedido());
 
 		return pedido;

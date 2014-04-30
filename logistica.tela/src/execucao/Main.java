@@ -60,12 +60,12 @@ public class Main {
 		for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
 			panelCentrosDistribuicao.add(new FilaPanel("Fila Centro" + centroDistribuicao.getId(), centroDistribuicao.getFila()));
 		}
-		
+
 		JPanel panelGeradoresEntrega = new JPanel();
 		panelGeradoresEntrega.setLayout(new BoxLayout(panelGeradoresEntrega, BoxLayout.Y_AXIS));
 		JScrollPane scrollPaneGeradoresEntrega = new JScrollPane(panelGeradoresEntrega);
 		scrollPaneGeradoresEntrega.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		for(GeradorEntregas geradorEntregas : geradoresEntrega){
+		for (GeradorEntregas geradorEntregas : geradoresEntrega) {
 			panelGeradoresEntrega.add(new ServicoPanel("Gerador entrega", geradorEntregas));
 		}
 

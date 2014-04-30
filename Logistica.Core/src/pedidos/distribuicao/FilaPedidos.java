@@ -50,6 +50,7 @@ public class FilaPedidos implements IFilaComPropertyChangeSupport {
 
 		try {
 			Entrega entrega = gerarEntrega();
+			changes.firePropertyChange("pedidos", null, pedidos);
 			System.out.printf("Gerada entrega %s\n", entrega.toString());
 			return entrega;
 		} finally {
