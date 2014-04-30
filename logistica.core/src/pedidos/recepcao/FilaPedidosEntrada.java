@@ -3,9 +3,10 @@ package pedidos.recepcao;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import estrutura.IFila;
 import pedidos.IPedido;
 
-public class FilaPedidosEntrada {
+public class FilaPedidosEntrada implements IFila {
 
 	private Queue<IPedido> pedidos = new LinkedList<IPedido>();
 	
@@ -24,5 +25,10 @@ public class FilaPedidosEntrada {
 		System.out.printf("pedido %s obtido da fila de entrada\n", pedido.getIdPedido());
 		
 		return pedido;
+	}
+
+	@Override
+	public synchronized int getNumeroItens() {
+		return pedidos.size();
 	}
 }

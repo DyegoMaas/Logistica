@@ -7,10 +7,11 @@ import java.util.Queue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import estrutura.IFila;
 import pedidos.IPedido;
 import pedidos.entregas.Entrega;
 
-public class FilaPedidos {
+public class FilaPedidos implements IFila{
 
 	private final ReentrantLock lock = new ReentrantLock();
 	private final Condition podeGerarUmPedido = lock.newCondition();
@@ -68,5 +69,10 @@ public class FilaPedidos {
 			contadorPacotesEntrega += pedidoPeek.getNumeroPacotes();
 		}
 		return new Entrega(pedidosEntrega);
+	}
+
+	@Override
+	public synchronized int getNumeroItens() {
+		return pedidos.size();
 	}
 }
