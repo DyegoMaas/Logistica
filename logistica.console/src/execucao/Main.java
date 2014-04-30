@@ -18,6 +18,8 @@ import pedidos.recepcao.IRecebedorPedidos;
 import pedidos.recepcao.RecebedorPedidos;
 
 public class Main {
+	private static final int NUMERO_PEDIDOS_POR_ENTREGA = 5;
+	
 	public static void main(String[] args) throws Exception{
 		Cidade cidade = gerarCidade(25);			
 		
@@ -29,7 +31,7 @@ public class Main {
 		
 		int i = 0;
 		for (Garagem garagem : cidade.getGaragens()) {
-			CentroDistribuicao centroDistribuicao = new CentroDistribuicao(++i, new FilaPedidos(5), garagem);
+			CentroDistribuicao centroDistribuicao = new CentroDistribuicao(++i, new FilaPedidos(NUMERO_PEDIDOS_POR_ENTREGA), garagem);
 			
 			centrosDistribuicao.add(centroDistribuicao);	
 			geradoresEntrega.add(new GeradorEntregas(centroDistribuicao));
@@ -40,16 +42,16 @@ public class Main {
 			new DelegadorPedidos(filaEntrada, centrosDistribuicao),
 			new DelegadorPedidos(filaEntrada, centrosDistribuicao),
 			new DelegadorPedidos(filaEntrada, centrosDistribuicao)
-		};
-		
-		for (DelegadorPedidos delegadorPedidos : delegadores) {
-			delegadorPedidos.definirIntervaloExecucao(50);
-			delegadorPedidos.executar();
-		}			
+		};		
 		
 		GeradorPedidos geradorPedidos = new GeradorPedidos(recebedorPedidos, cidade);	
 		geradorPedidos.definirIntervaloExecucao(20);
 		geradorPedidos.executar();
+		
+		for (DelegadorPedidos delegadorPedidos : delegadores) {
+			delegadorPedidos.definirIntervaloExecucao(50);
+			delegadorPedidos.executar();
+		}	
 		
 		for (GeradorEntregas geradorEntregas : geradoresEntrega) {
 			geradorEntregas.definirIntervaloExecucao(100);
