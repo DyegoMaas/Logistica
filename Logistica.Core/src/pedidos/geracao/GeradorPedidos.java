@@ -18,7 +18,7 @@ public class GeradorPedidos extends Thread implements IServico {
 
 	private final ReentrantLock lock = new ReentrantLock();
 	private Condition podeContinuar = lock.newCondition();
-	
+
 	private boolean deveGerarPedidos = true;
 	private int intervaloExecucao;
 	private IRecebedorPedidos recebedorPedidos;
@@ -31,21 +31,21 @@ public class GeradorPedidos extends Thread implements IServico {
 
 	@Override
 	public void run() {
-		while(true){
+		while (true) {
 			lock.lock();
-			
+
 			try {
-				while(!deveGerarPedidos)
+				while (!deveGerarPedidos)
 					podeContinuar.await();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			IPedido novoPedido = gerarPedido();
 			recebedorPedidos.receberPedido(novoPedido);
 			DelayHelper.aguardar(intervaloExecucao);
-			
+
 			lock.unlock();
 		}
 	}
@@ -81,16 +81,17 @@ public class GeradorPedidos extends Thread implements IServico {
 	}
 
 	private boolean started = false;
+
 	@Override
 	public void executar() {
 		lock.lock();
-		
+
 		deveGerarPedidos = true;
 		podeContinuar.signalAll();
-		
+
 		lock.unlock();
-		
-		if(!started){
+
+		if (!started) {
 			start();
 			started = true;
 		}
@@ -113,11 +114,5 @@ public class GeradorPedidos extends Thread implements IServico {
 	@Override
 	public int getIntervaloExecucao() {
 		return intervaloExecucao;
-	}
-
-	@Override
-	public StatusExecucaoServico getStatusExecucao() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

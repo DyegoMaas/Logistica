@@ -14,13 +14,12 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import servicos.IServico;
 import servicos.IServicoComPropertyChangeSupport;
 import servicos.StatusExecucaoServico;
 
 public class ServicoColorPanel extends JPanel implements PropertyChangeListener {
 
-	private IServico servico;
+	private IServicoComPropertyChangeSupport servico;
 	private String tituloServico;
 	private JLabel labelTitulo;
 

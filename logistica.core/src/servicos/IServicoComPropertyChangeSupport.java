@@ -7,4 +7,6 @@ public interface IServicoComPropertyChangeSupport extends IServico {
 	void addPropertyChangeListener(PropertyChangeListener l);
 
 	void removePropertyChangeListener(PropertyChangeListener l);
+
+	StatusExecucaoServico getStatusExecucao();
 }
