@@ -55,8 +55,17 @@ public class Main {
 		panel.add(new ServicoPanel("Gerador pedidos", geradorPedidos));
 		panel.add(new FilaPanel("Fila pedidos entrada", filaEntrada));
 		JPanel panelDelegadores = new JPanel();
+		panelDelegadores.setLayout(new BoxLayout(panelDelegadores, BoxLayout.Y_AXIS));
+		
+		for (DelegadorPedidos delegadorPedidos : delegadores) {
+			panelDelegadores.add(new ServicoPanel("Delegador", delegadorPedidos));
+		}
+
 		JScrollPane scrollPane = new JScrollPane(panelDelegadores);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		panel.add(scrollPane);
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
