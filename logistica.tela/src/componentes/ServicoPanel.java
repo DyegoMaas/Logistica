@@ -28,6 +28,7 @@ public class ServicoPanel extends JPanel {
 		final Button botaoPararContinuar = new Button(textoBotao);
 		botaoPararContinuar.setSize(100, 20);
 		final TextField textFieldIntervaloGeracaoPedidos = new TextField();
+		textFieldIntervaloGeracaoPedidos.setText(String.valueOf(servico.getIntervaloExecucao()));
 		textFieldIntervaloGeracaoPedidos.setSize(100, 20);
 		botaoPararContinuar.addActionListener(new ActionListener() {
 			@Override

@@ -5,9 +5,8 @@ import java.beans.PropertyChangeSupport;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import estrutura.IFila;
-import estrutura.IFilaComPropertyChangeSupport;
 import pedidos.IPedido;
+import estrutura.IFilaComPropertyChangeSupport;
 
 public class FilaPedidosEntrada implements IFilaComPropertyChangeSupport {
 
@@ -17,7 +16,7 @@ public class FilaPedidosEntrada implements IFilaComPropertyChangeSupport {
 	public synchronized void addPedido(IPedido novoPedido) {
 		pedidos.add(novoPedido);
 		changes.firePropertyChange("pedidos", null, pedidos);
-		
+
 		System.out.printf("pedido %s adicionado na fila de entrada\n", novoPedido.getIdPedido());
 
 		notifyAll();

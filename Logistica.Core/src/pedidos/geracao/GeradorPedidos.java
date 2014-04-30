@@ -12,40 +12,40 @@ import estrutura.Endereco;
 import estrutura.Imovel;
 
 public class GeradorPedidos extends Thread implements IServico {
-	
+
 	private boolean deveGerarPedidos = true;
 	private int intervaloExecucao;
 	private IRecebedorPedidos recebedorPedidos;
 	private Cidade cidade;
 
-	public GeradorPedidos(IRecebedorPedidos recebedorPedidos, Cidade cidade){
+	public GeradorPedidos(IRecebedorPedidos recebedorPedidos, Cidade cidade) {
 		this.recebedorPedidos = recebedorPedidos;
 		this.cidade = cidade;
 	}
 
 	@Override
-	public void run(){
-		while(deveGerarPedidos) {
+	public void run() {
+		while (deveGerarPedidos) {
 			IPedido novoPedido = gerarPedido();
-			
-			recebedorPedidos.receberPedido(novoPedido);			
+
+			recebedorPedidos.receberPedido(novoPedido);
 			DelayHelper.aguardar(intervaloExecucao);
 		}
 	}
-		
-	private IPedido gerarPedido() {		
+
+	private IPedido gerarPedido() {
 		Pedido novoPedido = new Pedido(numeroPacotesAleatorio(), enderecoAleatorio());
 		System.out.printf("pedido %s gerado\n", novoPedido.getIdPedido());
-		
+
 		return novoPedido;
-	}	
+	}
 
 	private Endereco enderecoAleatorio() {
 		Imovel[] residencias = cidade.getResidencias();
-		
+
 		Random random = new Random();
 		Imovel residenciaEscolhida = residencias[random.nextInt(residencias.length)];
-				
+
 		return new Endereco(residenciaEscolhida.getLogradouro().getNome(), residenciaEscolhida.getNumero());
 	}
 
@@ -71,16 +71,20 @@ public class GeradorPedidos extends Thread implements IServico {
 
 	@Override
 	public void interromperOuExecutar() {
-		if(deveGerarPedidos){
+		if (deveGerarPedidos) {
 			interromper();
-		}
-		else {
+		} else {
 			executar();
 		}
 	}
-	
+
 	@Override
 	public boolean isExecutando() {
 		return deveGerarPedidos;
-	}	
+	}
+
+	@Override
+	public int getIntervaloExecucao() {
+		return intervaloExecucao;
+	}
 }

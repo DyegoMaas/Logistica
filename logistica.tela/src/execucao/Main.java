@@ -1,10 +1,12 @@
 package execucao;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -48,17 +50,14 @@ public class Main {
 		GeradorPedidos geradorPedidos = new GeradorPedidos(recebedorPedidos, cidade);
 		geradorPedidos.definirIntervaloExecucao(20);
 
-		JPanel listaServicos = new JPanel();
-		listaServicos.setLayout(new GridLayout(2, 1));
-		JPanel panelBotoesDelegadores = new JPanel();
-
 		JFrame frame = new JFrame();
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setSize(500, 100);
-		frame.add(panel);
-		panel.add(new ServicoPanel("Gerador pedidos", geradorPedidos));
-		panel.add(new FilaPanel("Fila pedidos entrada", filaEntrada));
+		JPanel panelGeracaoDelegacao = new JPanel();
+		JPanel panelCentrosDistribuicao = new JPanel();
+		panelGeracaoDelegacao.setLayout(new BoxLayout(panelGeracaoDelegacao, BoxLayout.Y_AXIS));
+		panelGeracaoDelegacao.setSize(500, 100);
+		frame.add(panelGeracaoDelegacao);
+		panelGeracaoDelegacao.add(new ServicoPanel("Gerador pedidos", geradorPedidos));
+		panelGeracaoDelegacao.add(new FilaPanel("Fila pedidos entrada", filaEntrada));
 		JPanel panelDelegadores = new JPanel();
 		panelDelegadores.setLayout(new BoxLayout(panelDelegadores, BoxLayout.Y_AXIS));
 
@@ -69,7 +68,26 @@ public class Main {
 		JScrollPane scrollPane = new JScrollPane(panelDelegadores);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		panel.add(scrollPane);
+		JPanel panelListaServicos = new JPanel();
+		panelListaServicos.setLayout(new BoxLayout(panelListaServicos, BoxLayout.Y_AXIS));
+		JPanel panelBotoesDelegadores = new JPanel();
+		panelBotoesDelegadores.setLayout(new BoxLayout(panelBotoesDelegadores, BoxLayout.X_AXIS));
+		
+		JButton botaoAdicionarDelegador = new JButton("+ Delegador");
+		botaoAdicionarDelegador.setSize(105, 20);
+		botaoAdicionarDelegador.setPreferredSize(new Dimension(105, 20));
+		JButton botaoRemoverDelegador = new JButton("- Delegador");
+		botaoRemoverDelegador.setSize(105, 20);
+		botaoRemoverDelegador.setPreferredSize(new Dimension(105, 20));
+		panelBotoesDelegadores.add(botaoAdicionarDelegador);
+		panelBotoesDelegadores.add(botaoRemoverDelegador);
+		panelBotoesDelegadores.setSize(210, 20);
+		panelBotoesDelegadores.setPreferredSize(new Dimension(210, 20));
+
+		panelListaServicos.add(scrollPane);
+		panelListaServicos.add(panelBotoesDelegadores);
+		
+		panelGeracaoDelegacao.add(panelListaServicos);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
