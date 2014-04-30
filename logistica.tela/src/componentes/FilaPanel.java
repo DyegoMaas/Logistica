@@ -8,6 +8,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
 
 import estrutura.IFila;
+import estrutura.IFilaComPropertyChangeSupport;
 
 public class FilaPanel extends JPanel implements PropertyChangeListener {
 
@@ -15,9 +16,10 @@ public class FilaPanel extends JPanel implements PropertyChangeListener {
 	private Label labelQuantidadePedidos = null;
 	private String tituloFila;
 
-	public FilaPanel(String tituloFila, IFila fila){
+	public FilaPanel(String tituloFila, IFilaComPropertyChangeSupport fila){
 		this.tituloFila = tituloFila;
 		this.fila = fila;
+		fila.addPropertyChangeListener(this);
 		this.setLayout(new GridLayout(2, 1));
 		Label labelDescricaoQuantidadePedidos = new Label("Quantidade de pedidos:");
 		labelDescricaoQuantidadePedidos.setSize(100, 20);

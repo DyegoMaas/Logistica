@@ -6,9 +6,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import estrutura.IFila;
+import estrutura.IFilaComPropertyChangeSupport;
 import pedidos.IPedido;
 
-public class FilaPedidosEntrada implements IFila {
+public class FilaPedidosEntrada implements IFilaComPropertyChangeSupport {
 
 	private PropertyChangeSupport changes = new PropertyChangeSupport(this);
 	private Queue<IPedido> pedidos = new LinkedList<IPedido>();
@@ -16,6 +17,7 @@ public class FilaPedidosEntrada implements IFila {
 	public synchronized void addPedido(IPedido novoPedido) {
 		pedidos.add(novoPedido);
 		changes.firePropertyChange("pedidos", null, pedidos);
+		
 		System.out.printf("pedido %s adicionado na fila de entrada\n", novoPedido.getIdPedido());
 
 		notifyAll();
