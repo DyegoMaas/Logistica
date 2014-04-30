@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import pedidos.IPedido;
 import pedidos.entregas.Entrega;
 
 public class FilaPedidos {
 
+	private final ReentrantLock lock = new ReentrantLock();
+	private final Condition podeGerarUmPedido = lock.newCondition();
+	
 	private Queue<IPedido> pedidos = new LinkedList<IPedido>();
 	private int contadorNumeroPacotes = 0;
 	private int numeroPedidosPorEntrega;
@@ -18,22 +23,32 @@ public class FilaPedidos {
 		this.numeroPedidosPorEntrega = numeroPedidosPorEntrega;		
 	}
 	
-	public synchronized void addPedido(IPedido novoPedido){
-		pedidos.add(novoPedido);
-		contadorNumeroPacotes += novoPedido.getNumeroPacotes();
-		System.out.printf("pedido %s adicionado na fila de entrega\n", novoPedido.getIdPedido());
+	public void addPedido(IPedido novoPedido){
+		lock.lock();		
 
-		notifyAll();
+		try{
+			pedidos.add(novoPedido);
+			contadorNumeroPacotes += novoPedido.getNumeroPacotes();
+			System.out.printf("pedido %s adicionado na fila de entrega\n", novoPedido.getIdPedido());	
+		} finally {
+			podeGerarUmPedido.signalAll();
+			lock.unlock();	
+		}		
 	}
 	
-	public synchronized Entrega obterEntrega() throws InterruptedException {
-		while(!possuiNumeroMinimoPedidos())
-			wait();
+	public Entrega obterEntrega() throws InterruptedException {
+		lock.lock();
 		
-		Entrega entrega = gerarEntrega();
-		System.out.printf("Gerada entrega %s\n", entrega.toString());
-
-		return entrega;
+		while(!possuiNumeroMinimoPedidos())
+			podeGerarUmPedido.await();
+		
+		try{
+			Entrega entrega = gerarEntrega();
+			System.out.printf("Gerada entrega %s\n", entrega.toString());
+			return entrega;
+		} finally {
+			lock.unlock();				
+		}			
 	}
 
 	private boolean possuiNumeroMinimoPedidos() {
