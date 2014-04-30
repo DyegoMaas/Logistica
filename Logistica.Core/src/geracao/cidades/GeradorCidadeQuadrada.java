@@ -138,11 +138,10 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 	}
 
 	private boolean devoCriarUmaGaragem(int x, int y, int tamanho) {
-//		int raiz = (int) Math.sqrt(tamanho);
-//		return x % raiz == 0 || y % raiz == 0;
-		int ocorrencia = tamanho / 2;
+		int raiz = (int) Math.sqrt(tamanho);
+		boolean retorno = x % raiz == 0 && y % raiz == 0;
 		boolean ehUltimaQuadra = (x + 1) * (y + 1) == tamanho;
-		return ocorrencia == x || ocorrencia == y || ehUltimaQuadra;
+		return retorno || ehUltimaQuadra;
 	}
 
 	private boolean estouEmUmQuarteirao(int ultimoY, int ultimoX) {
