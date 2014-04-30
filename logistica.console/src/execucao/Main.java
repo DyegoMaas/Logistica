@@ -29,7 +29,7 @@ public class Main {
 		
 		int i = 0;
 		for (Garagem garagem : cidade.getGaragens()) {
-			CentroDistribuicao centroDistribuicao = new CentroDistribuicao(++i, new FilaPedidos(), garagem);
+			CentroDistribuicao centroDistribuicao = new CentroDistribuicao(++i, new FilaPedidos(5), garagem);
 			
 			centrosDistribuicao.add(centroDistribuicao);	
 			geradoresEntrega.add(new GeradorEntregas(centroDistribuicao));

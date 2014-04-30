@@ -55,7 +55,7 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 				
 				//quarteirão
 				if(estouEmUmQuarteirao(ultimoY, ultimoX)){
-					if(devoCriarUmaGaragem(x, y,tamanho)){
+					if(devoCriarUmaGaragem(x, y, tamanho)){
 						int localizacaoGaragem = obterLocalizacaoGaragem();
 						switch(localizacaoGaragem){
 							case 0:
@@ -138,8 +138,11 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 	}
 
 	private boolean devoCriarUmaGaragem(int x, int y, int tamanho) {
-		int raiz = (int) Math.sqrt(tamanho);
-		return x % raiz == 0 || y % raiz == 0;
+//		int raiz = (int) Math.sqrt(tamanho);
+//		return x % raiz == 0 || y % raiz == 0;
+		int ocorrencia = tamanho / 2;
+		boolean ehUltimaQuadra = (x + 1) * (y + 1) == tamanho;
+		return ocorrencia == x || ocorrencia == y || ehUltimaQuadra;
 	}
 
 	private boolean estouEmUmQuarteirao(int ultimoY, int ultimoX) {

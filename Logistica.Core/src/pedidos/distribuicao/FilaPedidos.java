@@ -12,11 +12,16 @@ public class FilaPedidos {
 
 	private Queue<IPedido> pedidos = new LinkedList<IPedido>();
 	private int contadorNumeroPacotes = 0;
+	private int numeroPedidosPorEntrega;
+	
+	public FilaPedidos(int numeroPedidosPorEntrega){
+		this.numeroPedidosPorEntrega = numeroPedidosPorEntrega;		
+	}
 	
 	public synchronized void addPedido(IPedido novoPedido){
 		pedidos.add(novoPedido);
 		contadorNumeroPacotes += novoPedido.getNumeroPacotes();
-		System.out.printf("pedido %s adicionado na fila\n", novoPedido.getIdPedido());
+		System.out.printf("pedido %s adicionado na fila de entrega\n", novoPedido.getIdPedido());
 
 		notifyAll();
 	}
@@ -32,7 +37,7 @@ public class FilaPedidos {
 	}
 
 	private boolean possuiNumeroMinimoPedidos() {
-		return contadorNumeroPacotes >= 50;
+		return contadorNumeroPacotes >= numeroPedidosPorEntrega;
 	}
 	
 	private Entrega gerarEntrega(){
@@ -40,7 +45,7 @@ public class FilaPedidos {
 		int contadorPacotesEntrega = 0;
 		IPedido pedidoPeek = pedidos.peek();
 		contadorPacotesEntrega += pedidoPeek.getNumeroPacotes();
-		while(contadorPacotesEntrega < 50){
+		while(contadorPacotesEntrega < numeroPedidosPorEntrega){
 			IPedido pedidoPoll = pedidos.poll();
 			pedidosEntrega.add(pedidoPoll);
 			contadorNumeroPacotes -= pedidoPoll.getNumeroPacotes();

@@ -2,22 +2,22 @@ package estrutura;
 
 import java.util.Random;
 import java.util.concurrent.Semaphore;
-
-import org.omg.PortableServer.ForwardRequestHelper;
+import java.util.concurrent.TimeUnit;
 
 import pedidos.IPedido;
 import pedidos.entregas.Entrega;
+import utils.DelayHelper;
 
 public class Garagem extends Imovel{
 
-	public final int TIMEOUT_MS = 100;
+	public final int TIMEOUT_MS = 15;
 	
 	private IRegiaoAbrangencia regiaoAbrangencia;
 	private Semaphore caminhoes;
 	private int id;
 	
-	public Garagem(int id, LadoImovel ladoImovel, int numero, int numeroCaminhoes, IRegiaoAbrangencia regiaoAbrangencia){
-		super(TipoImovel.GARAGEM, ladoImovel, numero);
+	public Garagem(int id, LadoImovel ladoImovel, int numeroEndereco, int numeroCaminhoes, IRegiaoAbrangencia regiaoAbrangencia){
+		super(TipoImovel.GARAGEM, ladoImovel, numeroEndereco);
 		this.id = id;
 		this.regiaoAbrangencia = regiaoAbrangencia;
 		
@@ -28,23 +28,28 @@ public class Garagem extends Imovel{
 		return regiaoAbrangencia.estaNaAreaDeAbrangencia(endereco);
 	}
 
-	public void entregar(Entrega entrega) throws InterruptedException{
-		System.out.println("Iniciando entregas na garagem " + id + ".");
-		caminhoes.acquire();
-		efetuarEntrega(entrega);
-		caminhoes.release();
-		System.out.println("Finalizada entrega na garagem " + id + ".");
+	public void entregar(Entrega entrega) throws InterruptedException{		
+		if(caminhoes.tryAcquire(TIMEOUT_MS, TimeUnit.MILLISECONDS)){
+			System.out.println("Iniciando entregas na garagem " + id + ".");
+			
+			efetuarEntrega(entrega);
+			
+			System.out.println("Finalizada entrega na garagem " + id + ".");
+			caminhoes.release();
+		}
+		else
+			System.out.println("Caminhão capotou ao sair para entrega na garagem " + id + ".");
 	}
 
-	private void efetuarEntrega(Entrega entrega) throws InterruptedException {
+	private void efetuarEntrega(Entrega entrega) {
 		for(IPedido pedido : entrega.getPedidos()){
-			Thread.sleep(tempoViagemAleatorio(pedido.getNumeroPacotes()));
+			DelayHelper.aguardar(tempoViagemAleatorio(pedido.getNumeroPacotes()));
 		}
 	}
 
 	private int tempoViagemAleatorio(int variacao) {
 		Random random = new Random();
 		return random.nextInt(150 * variacao);
-	}	
+	}
 	
 }

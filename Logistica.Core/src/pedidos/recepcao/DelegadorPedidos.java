@@ -27,7 +27,7 @@ public class DelegadorPedidos extends Thread implements IServico {
 				
 				for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
 					if(centroDistribuicao.tentarAdicionar(pedido)){
-						System.out.printf("pedido %d delegado para o centro de distribuicao %d\n", pedido.getNumeroPacotes(), centroDistribuicao.getId());
+						System.out.printf("pedido %s delegado para o centro de distribuicao %d\n", pedido.getIdPedido(), centroDistribuicao.getId());
 						break;
 					}
 				}

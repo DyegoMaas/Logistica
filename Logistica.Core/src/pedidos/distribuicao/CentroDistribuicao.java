@@ -17,24 +17,24 @@ public class CentroDistribuicao {
 		this.garagem = garagem;
 	}
 
-	public synchronized boolean tentarAdicionar(IPedido pedido) {
+	public boolean tentarAdicionar(IPedido pedido) {
 		if (souResponsavel(pedido.getEndereco())) {
 			filaPedidosCentro.addPedido(pedido);
 			return true;
 		}
 		return false;
 	}
+	
+	public void fazerEntrega() throws Exception{
+		distribuir(filaPedidosCentro.obterEntrega());
+	}
 
 	private boolean souResponsavel(Endereco endereco) {
 		return garagem.ehResponsavelPorEntregasNoEndereco(endereco);
 	}
 
-	private synchronized void distribuir(Entrega entrega) throws Exception {
+	private void distribuir(Entrega entrega) throws Exception {
 		garagem.entregar(entrega);
-	}
-
-	public void fazerEntrega() throws Exception{
-		distribuir(filaPedidosCentro.obterEntrega());
 	}
 	
 	@Override
