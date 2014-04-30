@@ -29,16 +29,13 @@ public class Garagem extends Imovel{
 	}
 
 	public void entregar(Entrega entrega) throws InterruptedException{		
-		if(caminhoes.tryAcquire(TIMEOUT_MS, TimeUnit.MILLISECONDS)){
-			System.out.println("Iniciando entregas na garagem " + id + ".");
-			
-			efetuarEntrega(entrega);
-			
-			System.out.println("Finalizada entrega na garagem " + id + ".");
-			caminhoes.release();
-		}
-		else
-			System.out.println("Caminhão capotou ao sair para entrega na garagem " + id + ".");
+		caminhoes.acquire();
+		System.out.println("Iniciando entregas na garagem " + id + ".");
+		
+		efetuarEntrega(entrega);
+		
+		System.out.println("Finalizada entrega na garagem " + id + ".");
+		caminhoes.release();
 	}
 
 	private void efetuarEntrega(Entrega entrega) {

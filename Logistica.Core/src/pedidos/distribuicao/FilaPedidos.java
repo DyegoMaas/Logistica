@@ -22,7 +22,7 @@ public class FilaPedidos implements IFilaComPropertyChangeSupport {
 	private final Condition podeGerarUmPedido = lock.newCondition();
 
 	private Queue<IPedido> pedidos = new LinkedList<IPedido>();
-	private int contadorNumeroPacotes = 0;
+	private int contadorNumeroPedidos = 0;
 	private int numeroPedidosPorEntrega;
 
 	public FilaPedidos(int numeroPedidosPorEntrega) {
@@ -35,7 +35,7 @@ public class FilaPedidos implements IFilaComPropertyChangeSupport {
 		try {
 			pedidos.add(novoPedido);
 			changes.firePropertyChange("pedidos", null, pedidos);
-			contadorNumeroPacotes += novoPedido.getNumeroPacotes();
+			contadorNumeroPedidos++;
 			System.out.printf("pedido %s adicionado na fila de entrega\n", novoPedido.getIdPedido());
 		} finally {
 			podeGerarUmPedido.signalAll();
@@ -59,21 +59,18 @@ public class FilaPedidos implements IFilaComPropertyChangeSupport {
 	}
 
 	private boolean possuiNumeroMinimoPedidos() {
-		return contadorNumeroPacotes >= numeroPedidosPorEntrega;
+		return contadorNumeroPedidos >= numeroPedidosPorEntrega;
 	}
 
 	private Entrega gerarEntrega() {
 		List<IPedido> pedidosEntrega = new ArrayList<IPedido>();
-		int contadorPacotesEntrega = 0;
-		IPedido pedidoPeek = pedidos.peek();
-		contadorPacotesEntrega += pedidoPeek.getNumeroPacotes();
-		while (contadorPacotesEntrega < numeroPedidosPorEntrega) {
+		
+		for (int i = 0; i < numeroPedidosPorEntrega; i++) {
 			IPedido pedidoPoll = pedidos.poll();
-			pedidosEntrega.add(pedidoPoll);
-			contadorNumeroPacotes -= pedidoPoll.getNumeroPacotes();
-			pedidoPeek = pedidos.peek();
-			contadorPacotesEntrega += pedidoPeek.getNumeroPacotes();
+			if(pedidoPoll != null)
+				pedidosEntrega.add(pedidoPoll);
 		}
+		contadorNumeroPedidos -= numeroPedidosPorEntrega;
 		return new Entrega(pedidosEntrega);
 	}
 
