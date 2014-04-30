@@ -53,9 +53,18 @@ public class Main {
 		JFrame frame = new JFrame();
 		JPanel panelGeracaoDelegacao = new JPanel();
 		JPanel panelCentrosDistribuicao = new JPanel();
+		panelCentrosDistribuicao.setLayout(new BoxLayout(panelCentrosDistribuicao, BoxLayout.Y_AXIS));
+		JScrollPane scrollPaneCentroDistribuicao = new JScrollPane(panelCentrosDistribuicao);
+		scrollPaneCentroDistribuicao.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
+			panelCentrosDistribuicao.add(new FilaPanel("Fila Centro" + centroDistribuicao.getId(), centroDistribuicao.getFila()));
+		}
+
 		panelGeracaoDelegacao.setLayout(new BoxLayout(panelGeracaoDelegacao, BoxLayout.Y_AXIS));
 		panelGeracaoDelegacao.setSize(500, 100);
 		frame.add(panelGeracaoDelegacao);
+		frame.add(scrollPaneCentroDistribuicao);
 		panelGeracaoDelegacao.add(new ServicoPanel("Gerador pedidos", geradorPedidos));
 		panelGeracaoDelegacao.add(new FilaPanel("Fila pedidos entrada", filaEntrada));
 		JPanel panelDelegadores = new JPanel();
@@ -72,7 +81,7 @@ public class Main {
 		panelListaServicos.setLayout(new BoxLayout(panelListaServicos, BoxLayout.Y_AXIS));
 		JPanel panelBotoesDelegadores = new JPanel();
 		panelBotoesDelegadores.setLayout(new BoxLayout(panelBotoesDelegadores, BoxLayout.X_AXIS));
-		
+
 		JButton botaoAdicionarDelegador = new JButton("+ Delegador");
 		botaoAdicionarDelegador.setSize(105, 20);
 		botaoAdicionarDelegador.setPreferredSize(new Dimension(105, 20));
@@ -86,9 +95,11 @@ public class Main {
 
 		panelListaServicos.add(scrollPane);
 		panelListaServicos.add(panelBotoesDelegadores);
-		
+
 		panelGeracaoDelegacao.add(panelListaServicos);
 
+		frame.setLayout(new GridLayout(1, 2));
+		frame.setPreferredSize(new Dimension(400, 700));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);

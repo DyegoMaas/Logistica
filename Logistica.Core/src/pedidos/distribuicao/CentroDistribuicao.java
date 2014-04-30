@@ -29,6 +29,10 @@ public class CentroDistribuicao {
 		distribuir(filaPedidosCentro.obterEntrega());
 	}
 
+	public FilaPedidos getFila(){
+		return filaPedidosCentro;
+	}
+
 	private boolean souResponsavel(Endereco endereco) {
 		return garagem.ehResponsavelPorEntregasNoEndereco(endereco);
 	}
