@@ -25,11 +25,15 @@ public class GeradorPedidos extends Thread implements IServico {
 
 	@Override
 	public void run() {
-		while (deveGerarPedidos) {
-			IPedido novoPedido = gerarPedido();
-
-			recebedorPedidos.receberPedido(novoPedido);
-			DelayHelper.aguardar(intervaloExecucao);
+		while(true){
+			while (deveGerarPedidos) {
+				System.out.println("x");
+				IPedido novoPedido = gerarPedido();
+	
+				recebedorPedidos.receberPedido(novoPedido);
+				DelayHelper.aguardar(intervaloExecucao);
+			}
+			DelayHelper.aguardar(50);
 		}
 	}
 
@@ -59,18 +63,23 @@ public class GeradorPedidos extends Thread implements IServico {
 	}
 
 	@Override
-	public void interromper() {
+	public void interromper() throws InterruptedException {
 		deveGerarPedidos = false;
 	}
 
+	private boolean started = false;
 	@Override
 	public void executar() {
 		deveGerarPedidos = true;
-		start();
+		
+		if(!started){
+			start();
+			started = true;
+		}
 	}
 
 	@Override
-	public void interromperOuExecutar() {
+	public void interromperOuExecutar() throws InterruptedException {
 		if (deveGerarPedidos) {
 			interromper();
 		} else {

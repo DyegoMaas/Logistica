@@ -9,10 +9,9 @@ import java.util.Queue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import estrutura.IFila;
-import estrutura.IFilaComPropertyChangeSupport;
 import pedidos.IPedido;
 import pedidos.entregas.Entrega;
+import estrutura.IFilaComPropertyChangeSupport;
 
 public class FilaPedidos implements IFilaComPropertyChangeSupport {
 

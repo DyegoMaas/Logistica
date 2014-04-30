@@ -3,8 +3,8 @@ package servicos;
 public interface IServico {
 	int getIntervaloExecucao();
 	void definirIntervaloExecucao(int milisegundos);
-	void interromper();
+	void interromper() throws InterruptedException;
 	void executar();
-	void interromperOuExecutar();
+	void interromperOuExecutar() throws InterruptedException;
 	boolean isExecutando();
 }

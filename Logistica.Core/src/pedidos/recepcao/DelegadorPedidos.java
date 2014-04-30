@@ -21,22 +21,25 @@ public class DelegadorPedidos extends Thread implements IServico {
 
 	@Override
 	public void run() {
-		while (continuarDelegacao) {
-			try {
-				IPedido pedido = filaPedidosEntrada.obterPedido();
-
-				for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
-					if (centroDistribuicao.tentarAdicionar(pedido)) {
-						System.out.printf("pedido %s delegado para o centro de distribuicao %d\n", pedido.getIdPedido(), centroDistribuicao.getId());
-						break;
+		while(true){
+			while (continuarDelegacao) {
+				try {
+					IPedido pedido = filaPedidosEntrada.obterPedido();
+	
+					for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
+						if (centroDistribuicao.tentarAdicionar(pedido)) {
+							System.out.printf("pedido %s delegado para o centro de distribuicao %d\n", pedido.getIdPedido(), centroDistribuicao.getId());
+							break;
+						}
 					}
+				} catch (InterruptedException e) {
+					// TODO logar erro
+					e.printStackTrace();
 				}
-			} catch (InterruptedException e) {
-				// TODO logar erro
-				e.printStackTrace();
+	
+				DelayHelper.aguardar(intervaloExecucao);
 			}
-
-			DelayHelper.aguardar(intervaloExecucao);
+			DelayHelper.aguardar(50);
 		}
 	}
 
@@ -46,18 +49,23 @@ public class DelegadorPedidos extends Thread implements IServico {
 	}
 
 	@Override
-	public void interromper() {
+	public void interromper() throws InterruptedException{
 		continuarDelegacao = false;
 	}
 
+	private boolean started = false;
 	@Override
 	public void executar() {
 		continuarDelegacao = true;
-		start();
+		
+		if(!started){
+			start();
+			started = true;
+		}
 	}
 
 	@Override
-	public void interromperOuExecutar() {
+	public void interromperOuExecutar() throws InterruptedException{
 		if(continuarDelegacao){
 			interromper();
 		}

@@ -33,7 +33,12 @@ public class ServicoPanel extends JPanel {
 		botaoPararContinuar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ServicoPanel.this.servico.interromperOuExecutar();
+				try {
+					ServicoPanel.this.servico.interromperOuExecutar();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				if (ServicoPanel.this.servico.isExecutando()) {
 					botaoPararContinuar.setLabel("Parar");
 				} else {
