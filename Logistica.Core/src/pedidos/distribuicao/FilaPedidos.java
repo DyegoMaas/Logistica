@@ -21,11 +21,11 @@ public class FilaPedidos implements IFilaComPropertyChangeSupport {
 	private final Condition podeGerarUmPedido = lock.newCondition();
 
 	private Queue<IPedido> pedidos = new LinkedList<IPedido>();
-	private int contadorNumeroPedidos = 0;
-	private int numeroPedidosPorEntrega;
+	private int contadorNumeroPacotes = 0;
+	private int numeroPacotesPorEntrega;
 
-	public FilaPedidos(int numeroPedidosPorEntrega) {
-		this.numeroPedidosPorEntrega = numeroPedidosPorEntrega;
+	public FilaPedidos(int numeroPacotesPorEntrega) {
+		this.numeroPacotesPorEntrega = numeroPacotesPorEntrega;
 	}
 
 	public void addPedido(IPedido novoPedido) {
@@ -34,7 +34,7 @@ public class FilaPedidos implements IFilaComPropertyChangeSupport {
 		try {
 			pedidos.add(novoPedido);
 			changes.firePropertyChange("pedidos", null, pedidos);
-			contadorNumeroPedidos++;
+			contadorNumeroPacotes += novoPedido.getNumeroPacotes();
 			System.out.printf("pedido %s adicionado na fila de entrega\n", novoPedido.getIdPedido());
 		} finally {
 			podeGerarUmPedido.signalAll();
@@ -45,7 +45,7 @@ public class FilaPedidos implements IFilaComPropertyChangeSupport {
 	public Entrega obterEntrega() throws InterruptedException {
 		lock.lock();
 
-		while (!possuiNumeroMinimoPedidos())
+		while (!possuiNumeroMinimoPacotes())
 			podeGerarUmPedido.await();
 
 		try {
@@ -57,19 +57,24 @@ public class FilaPedidos implements IFilaComPropertyChangeSupport {
 		}
 	}
 
-	private boolean possuiNumeroMinimoPedidos() {
-		return contadorNumeroPedidos >= numeroPedidosPorEntrega;
+	private boolean possuiNumeroMinimoPacotes() {
+		return contadorNumeroPacotes >= numeroPacotesPorEntrega;
 	}
 
 	private Entrega gerarEntrega() {
 		List<IPedido> pedidosEntrega = new ArrayList<IPedido>();
 		
-		for (int i = 0; i < numeroPedidosPorEntrega; i++) {
+		int pacotesNaEntrega = 0;
+		
+		while(pacotesNaEntrega < numeroPacotesPorEntrega){
 			IPedido pedidoPoll = pedidos.poll();
-			if(pedidoPoll != null)
+			if(pedidoPoll != null){
+				pacotesNaEntrega += pedidoPoll.getNumeroPacotes();
 				pedidosEntrega.add(pedidoPoll);
+			}
 		}
-		contadorNumeroPedidos -= numeroPedidosPorEntrega;
+		
+		contadorNumeroPacotes -= pacotesNaEntrega;
 		return new Entrega(pedidosEntrega);
 	}
 

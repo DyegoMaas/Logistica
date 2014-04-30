@@ -27,7 +27,6 @@ public class GeradorPedidos extends Thread implements IServico {
 	public void run() {
 		while(true){
 			while (deveGerarPedidos) {
-				System.out.println("x");
 				IPedido novoPedido = gerarPedido();
 	
 				recebedorPedidos.receberPedido(novoPedido);
