@@ -1,6 +1,8 @@
 package pedidos.recepcao;
 
 import java.util.List;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import pedidos.IPedido;
 import pedidos.distribuicao.CentroDistribuicao;
@@ -9,6 +11,9 @@ import utils.DelayHelper;
 
 public class DelegadorPedidos extends Thread implements IServico {
 
+	private final ReentrantLock lock = new ReentrantLock();
+	private Condition podeContinuar = lock.newCondition();
+	
 	private List<CentroDistribuicao> centrosDistribuicao;
 	private FilaPedidosEntrada filaPedidosEntrada;
 	private boolean continuarDelegacao = true;
@@ -22,24 +27,28 @@ public class DelegadorPedidos extends Thread implements IServico {
 	@Override
 	public void run() {
 		while(true){
-			while (continuarDelegacao) {
-				try {
-					IPedido pedido = filaPedidosEntrada.obterPedido();
-	
-					for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
-						if (centroDistribuicao.tentarAdicionar(pedido)) {
-							System.out.printf("pedido %s delegado para o centro de distribuicao %d\n", pedido.getIdPedido(), centroDistribuicao.getId());
-							break;
-						}
+			lock.lock();
+			
+			try {
+				while(!continuarDelegacao)
+					podeContinuar.await();
+				
+				IPedido pedido = filaPedidosEntrada.obterPedido();
+				
+				for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
+					if (centroDistribuicao.tentarAdicionar(pedido)) {
+						System.out.printf("pedido %s delegado para o centro de distribuicao %d\n", pedido.getIdPedido(), centroDistribuicao.getId());
+						break;
 					}
-				} catch (InterruptedException e) {
-					// TODO logar erro
-					e.printStackTrace();
 				}
-	
+				
 				DelayHelper.aguardar(intervaloExecucao);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			DelayHelper.aguardar(50);
+			
+			lock.unlock();
 		}
 	}
 
@@ -56,7 +65,10 @@ public class DelegadorPedidos extends Thread implements IServico {
 	private boolean started = false;
 	@Override
 	public void executar() {
-		continuarDelegacao = true;
+		lock.lock();				
+		continuarDelegacao = true;		
+		podeContinuar.signalAll();		
+		lock.unlock();
 		
 		if(!started){
 			start();

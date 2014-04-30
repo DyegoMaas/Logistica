@@ -1,6 +1,8 @@
 package pedidos.geracao;
 
 import java.util.Random;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import pedidos.IPedido;
 import pedidos.Pedido;
@@ -13,6 +15,9 @@ import estrutura.Imovel;
 
 public class GeradorPedidos extends Thread implements IServico {
 
+	private final ReentrantLock lock = new ReentrantLock();
+	private Condition podeContinuar = lock.newCondition();
+	
 	private boolean deveGerarPedidos = true;
 	private int intervaloExecucao;
 	private IRecebedorPedidos recebedorPedidos;
@@ -26,13 +31,21 @@ public class GeradorPedidos extends Thread implements IServico {
 	@Override
 	public void run() {
 		while(true){
-			while (deveGerarPedidos) {
-				IPedido novoPedido = gerarPedido();
-	
-				recebedorPedidos.receberPedido(novoPedido);
-				DelayHelper.aguardar(intervaloExecucao);
+			lock.lock();
+			
+			try {
+				while(!deveGerarPedidos)
+					podeContinuar.await();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			DelayHelper.aguardar(50);
+			
+			IPedido novoPedido = gerarPedido();
+			recebedorPedidos.receberPedido(novoPedido);
+			DelayHelper.aguardar(intervaloExecucao);
+			
+			lock.unlock();
 		}
 	}
 
@@ -69,7 +82,12 @@ public class GeradorPedidos extends Thread implements IServico {
 	private boolean started = false;
 	@Override
 	public void executar() {
+		lock.lock();
+		
 		deveGerarPedidos = true;
+		podeContinuar.signalAll();
+		
+		lock.unlock();
 		
 		if(!started){
 			start();

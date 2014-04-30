@@ -1,11 +1,17 @@
 package pedidos.entregas;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
 import pedidos.distribuicao.CentroDistribuicao;
 import servicos.IServico;
 import utils.DelayHelper;
 
 public class GeradorEntregas extends Thread implements IServico {
 
+	private final ReentrantLock lock = new ReentrantLock();
+	private Condition podeContinuar = lock.newCondition();
+	
 	private boolean continuarGerandoEntregas = true;
 	private CentroDistribuicao centroDistribuicao;
 	private int intervaloExecucao;
@@ -17,17 +23,21 @@ public class GeradorEntregas extends Thread implements IServico {
 	@Override
 	public void run() {
 		while(true){
-			while (continuarGerandoEntregas) {
-				try {
-					centroDistribuicao.fazerEntrega();
-					DelayHelper.aguardar(intervaloExecucao);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+			lock.lock();
+			
+			try {
+				while(!continuarGerandoEntregas)
+					podeContinuar.await();
+				
+				centroDistribuicao.fazerEntrega();
+				DelayHelper.aguardar(intervaloExecucao);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			DelayHelper.aguardar(50);
+			
+			lock.unlock();
 		}
 	}
 
@@ -44,7 +54,12 @@ public class GeradorEntregas extends Thread implements IServico {
 	private boolean started = false;
 	@Override
 	public void executar() {
+		lock.lock();
+		
 		continuarGerandoEntregas = true;
+		
+		podeContinuar.signalAll();		
+		lock.unlock();
 		
 		if(!started){
 			start();
