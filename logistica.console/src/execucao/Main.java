@@ -19,10 +19,7 @@ import pedidos.recepcao.RecebedorPedidos;
 
 public class Main {
 	public static void main(String[] args) throws Exception{
-		IGeradorCidade geradorCidade = new GeradorCidadeQuadrada();
-		final int tamanhoCidade = 25;
-		Cidade cidade = geradorCidade.gerar("Timbo", tamanhoCidade);
-			
+		Cidade cidade = gerarCidade(25);			
 		
 		FilaPedidosEntrada filaEntrada = new FilaPedidosEntrada();
 		IRecebedorPedidos recebedorPedidos = new RecebedorPedidos(filaEntrada);
@@ -46,14 +43,22 @@ public class Main {
 		};
 		
 		for (DelegadorPedidos delegadorPedidos : delegadores) {
+			delegadorPedidos.definirIntervaloExecucao(50);
 			delegadorPedidos.executar();
 		}			
 		
-		GeradorPedidos geradorPedidos = new GeradorPedidos(recebedorPedidos, cidade);		
+		GeradorPedidos geradorPedidos = new GeradorPedidos(recebedorPedidos, cidade);	
+		geradorPedidos.definirIntervaloExecucao(20);
 		geradorPedidos.executar();
 		
 		for (GeradorEntregas geradorEntregas : geradoresEntrega) {
+			geradorEntregas.definirIntervaloExecucao(100);
 			geradorEntregas.executar();
 		}		
+	}
+
+	private static Cidade gerarCidade(int tamanho) throws Exception {
+		IGeradorCidade geradorCidade = new GeradorCidadeQuadrada();		
+		return geradorCidade.gerar("Timbo", tamanho);
 	}
 }

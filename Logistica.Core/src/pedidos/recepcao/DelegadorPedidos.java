@@ -7,7 +7,7 @@ import pedidos.distribuicao.CentroDistribuicao;
 import servicos.IServico;
 import utils.DelayHelper;
 
-public class DelegadorPedidos extends Thread implements IDelegadorPedidos, IServico{
+public class DelegadorPedidos extends Thread implements IServico {
 
 	private List<CentroDistribuicao> centrosDistribuicao;
 	private FilaPedidosEntrada filaPedidosEntrada;
@@ -38,10 +38,6 @@ public class DelegadorPedidos extends Thread implements IDelegadorPedidos, IServ
 			
 			DelayHelper.aguardar(intervaloExecucao);
 		}
-	}
-	
-	public void interromperDelegacao(){
-		continuarDelegacao = false;
 	}
 
 	@Override

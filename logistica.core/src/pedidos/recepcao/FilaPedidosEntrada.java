@@ -11,7 +11,7 @@ public class FilaPedidosEntrada {
 	
 	public synchronized void addPedido(IPedido novoPedido){
 		pedidos.add(novoPedido);
-		System.out.printf("adicionado pedido de %d pacotes", novoPedido.getNumeroPacotes());
+		System.out.printf("pedido %s adicionado na fila de entrada\n", novoPedido.getIdPedido());
 
 		notifyAll();
 	}
@@ -21,7 +21,7 @@ public class FilaPedidosEntrada {
 			wait();
 		
 		IPedido pedido = pedidos.poll();
-		System.out.printf("consumido pedido de %d pacotes", pedido.getNumeroPacotes());
+		System.out.printf("pedido %s obtido da fila de entrada\n", pedido.getIdPedido());
 		
 		return pedido;
 	}

@@ -26,25 +26,15 @@ public class CentroDistribuicao {
 	}
 
 	private boolean souResponsavel(Endereco endereco) {
-		return umaDasGaragensAtendeOEndereco(endereco);
+		return garagem.ehResponsavelPorEntregasNoEndereco(endereco);
 	}
 
 	private synchronized void distribuir(Entrega entrega) throws Exception {
 		garagem.entregar(entrega);
 	}
 
-	private boolean umaDasGaragensAtendeOEndereco(Endereco endereco) {
-		return garagemQueAtendeOEndereco(endereco) != null;
-	}
-
 	public void fazerEntrega() throws Exception{
 		distribuir(filaPedidosCentro.obterEntrega());
-	}
-
-	private Garagem garagemQueAtendeOEndereco(Endereco endereco) {
-		if (garagem.ehResponsavelPorEntregasNoEndereco(endereco))
-			return garagem;
-		return null;
 	}
 	
 	@Override

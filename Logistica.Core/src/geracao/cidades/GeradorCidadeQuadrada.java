@@ -213,6 +213,6 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 	}
 
 	private String gerarNome(int x, int y) {
-		return "Rua " + x + " - " + y;
+		return "Rua " + x + "-" + y;
 	}
 }
