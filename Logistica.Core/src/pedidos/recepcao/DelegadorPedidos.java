@@ -55,5 +55,15 @@ public class DelegadorPedidos extends Thread implements IServico {
 		continuarDelegacao = true;
 		start();		
 	}
+
+	@Override
+	public void interromperOuExecutar() {
+		if(continuarDelegacao){
+			interromper();
+		}
+		else {
+			executar();
+		}
+	}
 	
 }

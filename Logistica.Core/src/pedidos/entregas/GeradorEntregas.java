@@ -43,4 +43,14 @@ public class GeradorEntregas extends Thread implements IServico{
 		continuarGerandoEntregas = true;
 		start();
 	}
+
+	@Override
+	public void interromperOuExecutar() {
+		if(continuarGerandoEntregas){
+			interromper();
+		}
+		else {
+			executar();
+		}
+	}
 }

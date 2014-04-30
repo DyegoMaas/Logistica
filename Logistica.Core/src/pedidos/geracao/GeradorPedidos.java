@@ -68,5 +68,15 @@ public class GeradorPedidos extends Thread implements IServico{
 		deveGerarPedidos = true;
 		start();
 	}
+
+	@Override
+	public void interromperOuExecutar() {
+		if(deveGerarPedidos){
+			interromper();
+		}
+		else {
+			executar();
+		}
+	}
 	
 }
