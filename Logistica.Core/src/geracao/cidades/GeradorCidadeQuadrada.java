@@ -37,8 +37,7 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 				if(ultimoY >= 0){
 					interseccaoAnteriorY = interseccoes[x][ultimoY];
 					
-					logradouroY = criarLogradouro(x, y, novaInterseccao, interseccaoAnteriorY);
-					logradourosAbrangidos.add(logradouroY.getNome());					
+					logradouroY = criarLogradouro(x, y, novaInterseccao, interseccaoAnteriorY);				
 					cidade.addLogradouro(logradouroY);
 				}
 				
@@ -48,8 +47,7 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 				if(ultimoX >= 0){
 					interseccaoAnteriorX = interseccoes[ultimoX][y];
 					
-					logradouroX = criarLogradouro(x, y, novaInterseccao, interseccaoAnteriorX);
-					logradourosAbrangidos.add(logradouroX.getNome());
+					logradouroX = criarLogradouro(x, y, novaInterseccao, interseccaoAnteriorX);					
 					cidade.addLogradouro(logradouroX);
 				}
 				
@@ -133,7 +131,11 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 	}
 	
 	private int obterLocalizacaoGaragem() {
-		Random random = new Random();
+		return random(4);
+	}
+	
+	private int random(int valorLimite){
+		Random random = new Random(System.currentTimeMillis());
 		return random.nextInt(4);
 	}
 
@@ -189,6 +191,8 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 		}
 		
 		Logradouro logradouro = new Logradouro(novaInterseccao, interseccaoAnterior, direcao, gerarNome(x, y));
+		logradourosAbrangidos.add(logradouro.getNome());
+		
 		return logradouro;
 	}
 	
@@ -207,11 +211,11 @@ public class GeradorCidadeQuadrada implements IGeradorCidade {
 	}
 	
 	private int numeroCaminhoesAleatorio() {
-		return new Random().nextInt(4);
+		return random(4);
 	}
 	
 	private int numeroDeResidenciaAleatorio() {
-		return new Random().nextInt(3) + 1;
+		return random(3) + 1;
 	}
 
 	private String gerarNome(int x, int y) {

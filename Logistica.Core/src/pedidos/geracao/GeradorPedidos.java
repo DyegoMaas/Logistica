@@ -1,5 +1,7 @@
 package pedidos.geracao;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -59,10 +61,10 @@ public class GeradorPedidos extends Thread implements IServico {
 
 	private Endereco enderecoAleatorio() {
 		Imovel[] residencias = cidade.getResidencias();
-
-		Random random = new Random();
+	
+		Random random = new Random(System.currentTimeMillis());
 		Imovel residenciaEscolhida = residencias[random.nextInt(residencias.length)];
-
+		
 		return new Endereco(residenciaEscolhida.getLogradouro().getNome(), residenciaEscolhida.getNumero());
 	}
 
