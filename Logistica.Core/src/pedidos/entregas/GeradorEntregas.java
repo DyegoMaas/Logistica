@@ -53,4 +53,9 @@ public class GeradorEntregas extends Thread implements IServico{
 			executar();
 		}
 	}
+	
+	@Override
+	public boolean isExecutando() {
+		return continuarGerandoEntregas;
+	}
 }

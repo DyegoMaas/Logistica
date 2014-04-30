@@ -5,4 +5,5 @@ public interface IServico {
 	void interromper();
 	void executar();
 	void interromperOuExecutar();
+	boolean isExecutando();
 }

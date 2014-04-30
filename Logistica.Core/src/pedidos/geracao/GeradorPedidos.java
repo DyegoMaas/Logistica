@@ -79,4 +79,8 @@ public class GeradorPedidos extends Thread implements IServico{
 		}
 	}
 	
+	@Override
+	public boolean isExecutando() {
+		return deveGerarPedidos;
+	}	
 }

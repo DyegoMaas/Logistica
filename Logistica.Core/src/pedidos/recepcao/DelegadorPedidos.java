@@ -65,5 +65,10 @@ public class DelegadorPedidos extends Thread implements IServico {
 			executar();
 		}
 	}
+
+	@Override
+	public boolean isExecutando() {
+		return continuarDelegacao;
+	}
 	
 }
