@@ -52,19 +52,28 @@ public class Main {
 
 		JFrame frame = new JFrame();
 		JPanel panelGeracaoDelegacao = new JPanel();
+
 		JPanel panelCentrosDistribuicao = new JPanel();
 		panelCentrosDistribuicao.setLayout(new BoxLayout(panelCentrosDistribuicao, BoxLayout.Y_AXIS));
 		JScrollPane scrollPaneCentroDistribuicao = new JScrollPane(panelCentrosDistribuicao);
 		scrollPaneCentroDistribuicao.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
 		for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
 			panelCentrosDistribuicao.add(new FilaPanel("Fila Centro" + centroDistribuicao.getId(), centroDistribuicao.getFila()));
+		}
+		
+		JPanel panelGeradoresEntrega = new JPanel();
+		panelGeradoresEntrega.setLayout(new BoxLayout(panelGeradoresEntrega, BoxLayout.Y_AXIS));
+		JScrollPane scrollPaneGeradoresEntrega = new JScrollPane(panelGeradoresEntrega);
+		scrollPaneGeradoresEntrega.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		for(GeradorEntregas geradorEntregas : geradoresEntrega){
+			panelGeradoresEntrega.add(new ServicoPanel("Gerador entrega", geradorEntregas));
 		}
 
 		panelGeracaoDelegacao.setLayout(new BoxLayout(panelGeracaoDelegacao, BoxLayout.Y_AXIS));
 		panelGeracaoDelegacao.setSize(500, 100);
 		frame.add(panelGeracaoDelegacao);
 		frame.add(scrollPaneCentroDistribuicao);
+		frame.add(scrollPaneGeradoresEntrega);
 		panelGeracaoDelegacao.add(new ServicoPanel("Gerador pedidos", geradorPedidos));
 		panelGeracaoDelegacao.add(new FilaPanel("Fila pedidos entrada", filaEntrada));
 		JPanel panelDelegadores = new JPanel();
@@ -99,7 +108,7 @@ public class Main {
 		panelGeracaoDelegacao.add(panelListaServicos);
 
 		frame.setLayout(new GridLayout(1, 2));
-		frame.setPreferredSize(new Dimension(400, 700));
+		frame.setPreferredSize(new Dimension(610, 500));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
