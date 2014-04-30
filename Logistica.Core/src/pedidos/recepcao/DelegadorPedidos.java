@@ -8,19 +8,18 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import pedidos.IPedido;
 import pedidos.distribuicao.CentroDistribuicao;
-import servicos.StatusExecucaoServico;
-import servicos.IServico;
 import servicos.IServicoComPropertyChangeSupport;
+import servicos.StatusExecucaoServico;
 import utils.DelayHelper;
 
 public class DelegadorPedidos extends Thread implements IServicoComPropertyChangeSupport {
 
 	private PropertyChangeSupport changes = new PropertyChangeSupport(this);
-	
 	private StatusExecucaoServico statusExecucaoServico = null;
+
 	private final ReentrantLock lock = new ReentrantLock();
 	private Condition podeContinuar = lock.newCondition();
-	
+
 	private List<CentroDistribuicao> centrosDistribuicao;
 	private FilaPedidosEntrada filaPedidosEntrada;
 	private boolean continuarDelegacao = true;
@@ -33,11 +32,11 @@ public class DelegadorPedidos extends Thread implements IServicoComPropertyChang
 
 	@Override
 	public void run() {
-		while(true){
+		while (true) {
 			lock.lock();
 
 			try {
-				while(!continuarDelegacao)
+				while (!continuarDelegacao)
 					podeContinuar.await();
 
 				StatusExecucaoServico statusExecucaoServicoAnterior = statusExecucaoServico;
@@ -49,7 +48,7 @@ public class DelegadorPedidos extends Thread implements IServicoComPropertyChang
 				statusExecucaoServicoAnterior = statusExecucaoServico;
 				statusExecucaoServico = StatusExecucaoServico.EXECUTANDO;
 				changes.firePropertyChange("statusExecucaoServico", statusExecucaoServicoAnterior, statusExecucaoServico);
-				
+
 				for (CentroDistribuicao centroDistribuicao : centrosDistribuicao) {
 					if (centroDistribuicao.tentarAdicionar(pedido)) {
 						System.out.printf("pedido %s delegado para o centro de distribuicao %d\n", pedido.getIdPedido(), centroDistribuicao.getId());
@@ -73,30 +72,30 @@ public class DelegadorPedidos extends Thread implements IServicoComPropertyChang
 	}
 
 	@Override
-	public void interromper() throws InterruptedException{
+	public void interromper() throws InterruptedException {
 		continuarDelegacao = false;
 	}
 
 	private boolean started = false;
+
 	@Override
 	public void executar() {
-		lock.lock();				
-		continuarDelegacao = true;		
-		podeContinuar.signalAll();		
+		lock.lock();
+		continuarDelegacao = true;
+		podeContinuar.signalAll();
 		lock.unlock();
-		
-		if(!started){
+
+		if (!started) {
 			start();
 			started = true;
 		}
 	}
 
 	@Override
-	public void interromperOuExecutar() throws InterruptedException{
-		if(continuarDelegacao){
+	public void interromperOuExecutar() throws InterruptedException {
+		if (continuarDelegacao) {
 			interromper();
-		}
-		else {
+		} else {
 			executar();
 		}
 	}
@@ -125,5 +124,5 @@ public class DelegadorPedidos extends Thread implements IServicoComPropertyChang
 	public StatusExecucaoServico getStatusExecucao() {
 		return statusExecucaoServico;
 	}
-	
+
 }

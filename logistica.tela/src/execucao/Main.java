@@ -67,7 +67,7 @@ public class Main {
 		JScrollPane scrollPaneGeradoresEntrega = new JScrollPane(panelGeradoresEntrega);
 		scrollPaneGeradoresEntrega.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		for (GeradorEntregas geradorEntregas : geradoresEntrega) {
-			panelGeradoresEntrega.add(new ServicoPanel("Gerador entrega", geradorEntregas));
+			panelGeradoresEntrega.add(new ServicoColorPanel("Gerador entrega", geradorEntregas));
 		}
 
 		panelGeracaoDelegacao.setLayout(new BoxLayout(panelGeracaoDelegacao, BoxLayout.Y_AXIS));
