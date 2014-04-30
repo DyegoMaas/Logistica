@@ -1,16 +1,24 @@
 package utils;
 
 public abstract class DelayHelper {
-	
-	public static void aguardar(long milisegundos){
-		if(milisegundos == 0)
+
+	private static int fator = 1;
+
+	public static void aguardar(long milisegundos) {
+		if (milisegundos == 0)
 			return;
-		
 		try {
-			Thread.sleep(milisegundos);
+			Thread.sleep(milisegundos * fator);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public static int getFator() {
+		return fator;
+	}
+
+	public static void setFator(int novoFator) {
+		fator = novoFator;
 	}
 }

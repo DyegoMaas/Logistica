@@ -1,13 +1,19 @@
 package execucao;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.TextField;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -19,6 +25,7 @@ import pedidos.recepcao.DelegadorPedidos;
 import pedidos.recepcao.FilaPedidosEntrada;
 import pedidos.recepcao.IRecebedorPedidos;
 import pedidos.recepcao.RecebedorPedidos;
+import utils.DelayHelper;
 import componentes.FilaPanel;
 import componentes.ServicoColorPanel;
 import componentes.ServicoPanel;
@@ -72,9 +79,6 @@ public class Main {
 
 		panelGeracaoDelegacao.setLayout(new BoxLayout(panelGeracaoDelegacao, BoxLayout.Y_AXIS));
 		panelGeracaoDelegacao.setSize(500, 100);
-		frame.add(panelGeracaoDelegacao);
-		frame.add(scrollPaneCentroDistribuicao);
-		frame.add(scrollPaneGeradoresEntrega);
 		panelGeracaoDelegacao.add(new ServicoPanel("Gerador pedidos", geradorPedidos));
 		panelGeracaoDelegacao.add(new FilaPanel("Fila pedidos entrada", filaEntrada));
 		JPanel panelDelegadores = new JPanel();
@@ -108,7 +112,54 @@ public class Main {
 
 		panelGeracaoDelegacao.add(panelListaServicos);
 
-		frame.setLayout(new GridLayout(1, 2));
+		JPanel panelFatorDelay = new JPanel();
+		panelFatorDelay.setLayout(new GridLayout(1, 2));
+
+		final TextField textFieldFatorDelay = new TextField();
+		textFieldFatorDelay.setText(String.valueOf(DelayHelper.getFator()));
+		textFieldFatorDelay.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				DelayHelper.setFator(Integer.valueOf(textFieldFatorDelay.getText()));
+			}
+		});
+		JLabel labelFatorDelay = new JLabel("Fator de delay:");
+
+		labelFatorDelay.setPreferredSize(new Dimension(610, 20));
+		labelFatorDelay.setSize(new Dimension(610, 20));
+
+		textFieldFatorDelay.setPreferredSize(new Dimension(610, 20));
+		textFieldFatorDelay.setSize(new Dimension(610, 20));
+
+		panelFatorDelay.add(labelFatorDelay);
+		panelFatorDelay.add(textFieldFatorDelay);
+		panelFatorDelay.setPreferredSize(new Dimension(610, 20));
+		panelFatorDelay.setSize(new Dimension(610, 20));
+
+		JPanel panelServicos = new JPanel();
+		panelServicos.setLayout(new GridLayout(1, 3));
+		panelServicos.setSize(610, 500);
+		panelServicos.setPreferredSize(new Dimension(610, 500));
+		panelServicos.setMinimumSize(new Dimension(600, 440));
+		
+		panelServicos.add(panelGeracaoDelegacao);
+		panelServicos.add(scrollPaneCentroDistribuicao);
+		panelServicos.add(scrollPaneGeradoresEntrega);
+
+		frame.setLayout(new GridBagLayout());
+		
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 0;
+		frame.add(panelFatorDelay, c);
+
+		c.fill = GridBagConstraints.BOTH;
+		c.gridx = 0;
+		c.gridy = 1;
+		frame.add(panelServicos, c);
+
+		//frame.setLayout(new GridLayout(2, 1));
 		frame.setPreferredSize(new Dimension(610, 500));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
