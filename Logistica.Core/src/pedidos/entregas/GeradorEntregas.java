@@ -4,13 +4,13 @@ import pedidos.distribuicao.CentroDistribuicao;
 import servicos.IServico;
 import utils.DelayHelper;
 
-public class GeradorEntrega extends Thread implements IServico{
+public class GeradorEntregas extends Thread implements IServico{
 
 	private boolean continuarGerandoEntregas = true;
 	private CentroDistribuicao centroDistribuicao;
 	private int intervaloExecucao;
 
-	public GeradorEntrega(CentroDistribuicao centroDistribuicao){
+	public GeradorEntregas(CentroDistribuicao centroDistribuicao){
 		this.centroDistribuicao = centroDistribuicao;
 	}
 
@@ -39,7 +39,7 @@ public class GeradorEntrega extends Thread implements IServico{
 	}
 
 	@Override
-	public void retomar() {
+	public void executar() {
 		continuarGerandoEntregas = true;
 		start();
 	}

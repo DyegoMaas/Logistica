@@ -26,13 +26,18 @@ public class GeradorPedidos extends Thread implements IServico{
 	@Override
 	public void run(){
 		while(deveGerarPedidos) {			
-			recebedorPedidos.receberPedido(novoPedido());			
+			IPedido novoPedido = gerarPedido();
+			
+			recebedorPedidos.receberPedido(novoPedido);			
 			DelayHelper.aguardar(intervaloExecucao);
 		}
 	}
 		
-	private IPedido novoPedido() {		
-		return new Pedido(numeroPacotesAleatorio(), enderecoAleatorio());
+	private IPedido gerarPedido() {		
+		Pedido novoPedido = new Pedido(numeroPacotesAleatorio(), enderecoAleatorio());
+		System.out.printf("pedido %s gerado\n", novoPedido.getIdPedido());
+		
+		return novoPedido;
 	}	
 
 	private Endereco enderecoAleatorio() {
@@ -59,7 +64,7 @@ public class GeradorPedidos extends Thread implements IServico{
 	}
 
 	@Override
-	public void retomar() {
+	public void executar() {
 		deveGerarPedidos = true;
 		start();
 	}

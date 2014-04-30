@@ -1,12 +1,17 @@
 package pedidos;
 
+import java.util.UUID;
+
 import estrutura.Endereco;
 
 public class Pedido implements IPedido {
+	private UUID idPedido;
 	private int numeroPacotes;
-	private Endereco endereco;
+	private Endereco endereco;	
 
 	public Pedido(int numeroPacotes, Endereco endereco){
+		this.idPedido = UUID.randomUUID();
+		
 		this.numeroPacotes = numeroPacotes;
 		this.endereco = endereco;
 	}
@@ -20,5 +25,8 @@ public class Pedido implements IPedido {
 	public Endereco getEndereco() {
 		return endereco;
 	}
-	
+
+	public UUID getIdPedido() {
+		return idPedido;
+	}	
 }

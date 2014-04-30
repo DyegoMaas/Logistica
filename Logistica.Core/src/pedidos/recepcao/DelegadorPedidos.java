@@ -55,7 +55,7 @@ public class DelegadorPedidos extends Thread implements IDelegadorPedidos, IServ
 	}
 
 	@Override
-	public void retomar() {
+	public void executar() {
 		continuarDelegacao = true;
 		start();		
 	}

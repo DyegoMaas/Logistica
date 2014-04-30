@@ -10,6 +10,7 @@ import java.util.List;
 
 import pedidos.distribuicao.CentroDistribuicao;
 import pedidos.distribuicao.FilaPedidos;
+import pedidos.entregas.GeradorEntregas;
 import pedidos.geracao.GeradorPedidos;
 import pedidos.recepcao.DelegadorPedidos;
 import pedidos.recepcao.FilaPedidosEntrada;
@@ -25,11 +26,16 @@ public class Main {
 		
 		FilaPedidosEntrada filaEntrada = new FilaPedidosEntrada();
 		IRecebedorPedidos recebedorPedidos = new RecebedorPedidos(filaEntrada);
+		
 		List<CentroDistribuicao> centrosDistribuicao = new ArrayList<CentroDistribuicao>();
+		List<GeradorEntregas> geradoresEntrega = new ArrayList<GeradorEntregas>();
 		
 		int i = 0;
 		for (Garagem garagem : cidade.getGaragens()) {
-			centrosDistribuicao.add(new CentroDistribuicao(++i, new FilaPedidos(), garagem));	
+			CentroDistribuicao centroDistribuicao = new CentroDistribuicao(++i, new FilaPedidos(), garagem);
+			
+			centrosDistribuicao.add(centroDistribuicao);	
+			geradoresEntrega.add(new GeradorEntregas(centroDistribuicao));
 		}
 					
 		DelegadorPedidos[] delegadores = new DelegadorPedidos[]{
@@ -40,10 +46,14 @@ public class Main {
 		};
 		
 		for (DelegadorPedidos delegadorPedidos : delegadores) {
-			delegadorPedidos.start();
+			delegadorPedidos.executar();
 		}			
 		
 		GeradorPedidos geradorPedidos = new GeradorPedidos(recebedorPedidos, cidade);		
-		geradorPedidos.start();
+		geradorPedidos.executar();
+		
+		for (GeradorEntregas geradorEntregas : geradoresEntrega) {
+			geradorEntregas.executar();
+		}		
 	}
 }

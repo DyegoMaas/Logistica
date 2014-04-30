@@ -9,15 +9,12 @@ public class CentroDistribuicao {
 
 	private FilaPedidos filaPedidosCentro;
 	private Garagem garagem;
-	//private List<Garagem> garagens;
 	private int idCentroDistribuicao;
 
-	//public CentroDistribuicao(FilaPedidos filaPedidosCentro, List<Garagem> garagens) {
 	public CentroDistribuicao(int idCentroDistribuicao, FilaPedidos filaPedidosCentro, Garagem garagem) {
 		this.idCentroDistribuicao = idCentroDistribuicao;
 		this.filaPedidosCentro = filaPedidosCentro;
 		this.garagem = garagem;
-		//this.garagens = garagens;
 	}
 
 	public synchronized boolean tentarAdicionar(IPedido pedido) {
@@ -48,11 +45,6 @@ public class CentroDistribuicao {
 		if (garagem.ehResponsavelPorEntregasNoEndereco(endereco))
 			return garagem;
 		return null;
-//		for (Garagem garagem : garagens) {
-//			if (garagem.ehResponsavelPorEntregasNoEndereco(endereco))
-//				return garagem;
-//		}
-//		return null;
 	}
 	
 	@Override

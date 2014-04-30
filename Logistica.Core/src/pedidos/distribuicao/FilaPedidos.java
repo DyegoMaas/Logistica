@@ -10,7 +10,6 @@ import pedidos.entregas.Entrega;
 
 public class FilaPedidos {
 
-	private final int NUMERO_MINIMO_PEDIDOS_ENTREGA = 50;
 	private Queue<IPedido> pedidos = new LinkedList<IPedido>();
 	private int contadorNumeroPacotes = 0;
 	
@@ -27,7 +26,7 @@ public class FilaPedidos {
 			wait();
 		
 		Entrega entrega = gerarEntrega();
-		System.out.printf("Gerada entrega %s", entrega.toString());
+		System.out.printf("Gerada entrega %s\n", entrega.toString());
 
 		return entrega;
 	}
